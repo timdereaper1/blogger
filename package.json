@@ -1,0 +1,50 @@
+{
+	"name": "blogger",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "next",
+		"test": "jest --watchAll"
+	},
+	"dependencies": {
+		"formik": "^2.2.9",
+		"next": "^11.0.1",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"yup": "^0.32.9"
+	},
+	"devDependencies": {
+		"@testing-library/dom": "^8.1.0",
+		"@testing-library/jest-dom": "^5.14.1",
+		"@testing-library/react": "^12.0.0",
+		"@testing-library/user-event": "^13.1.9",
+		"@types/jest": "^26.0.24",
+		"@types/react": "^17.0.14",
+		"@types/react-dom": "^17.0.9",
+		"@types/yup": "^0.29.13",
+		"babel-jest": "^27.0.6",
+		"jest": "^27.0.6",
+		"ts-jest": "^27.0.3",
+		"typescript": "^4.3.5"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "jsdom",
+		"setupFilesAfterEnv": [
+			"<rootDir>/tests/setupTests.ts"
+		],
+		"testPathIgnorePatterns": [
+			"/node_modules",
+			"/.next"
+		],
+		"transform": {
+			"^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
+		},
+		"transformIgnorePatterns": [
+			"/node_modules/",
+			"^.+\\.module\\.(css|sass|scss)$"
+		],
+		"collectCoverageFrom": [
+			"<rootDir>/src/**/*.{ts,tsx}"
+		]
+	}
+}
