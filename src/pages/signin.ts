@@ -1,3 +1,3 @@
-import Login from '../modules/login/web/ui/Login';
+import Login from '../platform/login/web/ui/Login';
 
 export default Login;

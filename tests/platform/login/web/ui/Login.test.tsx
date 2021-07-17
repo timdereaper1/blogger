@@ -1,14 +1,17 @@
+/**
+ * @jest-environment jsdom
+ */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { verifyUserLoginCredentials } from '../../../../../src/modules/login/web/services/loginApi';
-import { storeLoggedInUser } from '../../../../../src/modules/login/web/services/storage';
-import Login from '../../../../../src/modules/login/web/ui/Login';
+import { verifyUserLoginCredentials } from '../../../../../src/platform/login/web/services/loginApi';
+import { storeLoggedInUser } from '../../../../../src/platform/login/web/services/storage';
+import Login from '../../../../../src/platform/login/web/ui/Login';
 
 jest.mock('next/router');
-jest.mock('../../../../../src/modules/login/web/services/loginApi');
-jest.mock('../../../../../src/modules/login/web/services/storage');
+jest.mock('../../../../../src/platform/login/web/services/loginApi');
+jest.mock('../../../../../src/platform/login/web/services/storage');
 const mockedLoginApiService = verifyUserLoginCredentials as jest.MockedFunction<
 	typeof verifyUserLoginCredentials
 >;
@@ -38,11 +41,12 @@ describe('Login', () => {
 
 	it('should render correctly', async () => {
 		render(<Login />);
-		expect(screen.getByTestId(/title/)).toBeInTheDocument();
-		expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
-		expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
-		await waitFor(() => screen.getByRole('button', { name: 'Login' }));
-		expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.getByTestId(/title/)).toBeInTheDocument();
+			expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
+			expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
+			expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+		});
 	});
 
 	it('should show/enter the user email', async () => {
