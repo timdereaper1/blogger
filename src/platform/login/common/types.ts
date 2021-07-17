@@ -7,4 +7,5 @@ export interface LoggedInUser {
 	email: string;
 	name: string;
 	token: string;
+	id: string;
 }

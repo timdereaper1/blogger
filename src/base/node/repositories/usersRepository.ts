@@ -30,7 +30,7 @@ export function usersRepository(mongoose: Mongoose) {
 	async function insert(args: UserSchema): Promise<DBUser> {
 		const existingUser = await UserModel.exists({ email: args.email });
 		if (existingUser) throw new Error('Email already exists');
-		const user = await new UserModel(args).save();
+		const user = await UserModel.create(args);
 		return convertMongoUserToDBUser(user);
 	}
 
