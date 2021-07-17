@@ -3,3 +3,7 @@ export interface UserSchema {
 	password: string;
 	name: string;
 }
+
+export type DBUser = UserSchema & {
+	_id: string;
+};
