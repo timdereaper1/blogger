@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import faker from 'faker';
 import path from 'path';
 import {
-	usersRepository,
+	UsersRepository,
 	UsersRepositoryInterface,
 } from '../../../../src/base/node/repositories/usersRepository';
 import { DBUser, UserSchema } from '../../../../src/base/node/schemas/types';
@@ -40,7 +40,7 @@ describe('usersRepository', () => {
 	};
 
 	beforeAll(async () => {
-		repository = usersRepository(mockConnection as any);
+		repository = UsersRepository(mockConnection as any);
 	});
 
 	describe('insert', () => {

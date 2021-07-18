@@ -9,7 +9,7 @@ export interface UsersRepositoryInterface {
 
 type MongoUser = UserSchema & Document<any, any, UserSchema>;
 
-export function usersRepository(mongoose: Mongoose) {
+export function UsersRepository(mongoose: Mongoose) {
 	const UserModel = mongoose.model<UserSchema>('User', userSchema);
 
 	function convertMongoUserToDBUser(user: MongoUser): DBUser {
