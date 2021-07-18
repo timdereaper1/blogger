@@ -1,6 +1,7 @@
 import * as argon from 'argon2';
-import type { UsersRepositoryInterface } from '../../../../base/node/repositories/usersRepository';
-import { createAuthenticationToken } from '../../../../base/node/tokens';
+import { processErrorToErrorLogs } from 'src/base/node/logging';
+import type { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
+import { createAuthenticationToken } from 'src/base/node/tokens';
 import type { LoggedInUser, UserLoginCredentials } from '../../common/types';
 
 export async function verifyLoginCredentials(
@@ -19,7 +20,7 @@ export async function verifyLoginCredentials(
 			id: user._id,
 		};
 	} catch (error) {
-		// TODO: log error to error.log
+		processErrorToErrorLogs(error);
 		throw new Error('Invalid login credentials');
 	}
 }

@@ -1,4 +1,4 @@
-import { loginGraphQLMutationResolvers } from '../../login/node/loginGraphQLResolver';
+import { loginGraphQLMutationResolvers } from 'src/platform/login/node/loginGraphQLResolver';
 
 export const resolvers = {
 	Query: {

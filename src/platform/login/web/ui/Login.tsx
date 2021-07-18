@@ -1,9 +1,9 @@
 import { getIn, useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { UserLoginCredentials } from '../../common/types';
-import { storeLoggedInUser } from '../common/storage';
-import { loginValidateSchema } from '../common/validateSchema';
-import { useLogin } from './hooks/useLogin';
+import { UserLoginCredentials } from 'src/platform/login/common/types';
+import { useLogin } from 'src/platform/login/web/hooks/useLogin';
+import { storeLoggedInUser } from 'src/platform/login/web/storage';
+import { loginValidateSchema } from 'src/platform/login/web/validateSchema';
 
 export default function Login() {
 	const { push } = useRouter();

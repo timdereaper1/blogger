@@ -1,9 +1,9 @@
 import faker from 'faker';
+import { DBUser, UserSchema } from 'src/base/node/repositories/types';
 import {
 	UsersRepository,
 	UsersRepositoryInterface,
 } from 'src/base/node/repositories/usersRepository';
-import { DBUser, UserSchema } from 'src/base/node/schemas/types';
 
 describe('usersRepository', () => {
 	let repository: UsersRepositoryInterface;

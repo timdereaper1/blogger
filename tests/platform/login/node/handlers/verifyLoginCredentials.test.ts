@@ -1,7 +1,7 @@
 import * as argon from 'argon2';
 import faker from 'faker';
+import { DBUser } from 'src/base/node/repositories/types';
 import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
-import { DBUser } from 'src/base/node/schemas/types';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { verifyLoginCredentials } from 'src/platform/login/node/handlers/verifyLoginCredentials';
 

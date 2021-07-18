@@ -1,5 +1,5 @@
 import { Db } from 'mongodb';
-import type { DBUser, UserSchema } from '../schemas/types';
+import type { DBUser, UserSchema } from './types';
 
 export interface UsersRepositoryInterface {
 	findByEmail: (email: string) => Promise<DBUser>;
