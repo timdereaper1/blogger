@@ -1,37 +1,28 @@
-import { Document, Mongoose } from 'mongoose';
+import { Db } from 'mongodb';
 import type { DBUser, UserSchema } from '../schemas/types';
-import { userSchema } from '../schemas/userSchema';
 
 export interface UsersRepositoryInterface {
 	findByEmail: (email: string) => Promise<DBUser>;
 	insert: (args: UserSchema) => Promise<DBUser>;
 }
 
-type MongoUser = UserSchema & Document<any, any, UserSchema>;
-
-export function UsersRepository(mongoose: Mongoose) {
-	const UserModel = mongoose.model<UserSchema>('User', userSchema);
-
-	function convertMongoUserToDBUser(user: MongoUser): DBUser {
-		return Object.freeze<DBUser>({
-			_id: user._id,
-			name: user.name,
-			email: user.email,
-			password: user.password,
-		});
-	}
-
+export function UsersRepository(db: Db) {
 	async function findByEmail(email: string): Promise<DBUser> {
-		const user = await UserModel.findOne({ email }).exec();
+		const collection = db.collection<DBUser>('users');
+		const user = await collection.findOne({ email });
 		if (!user) throw new Error('Email does not exists');
-		return convertMongoUserToDBUser(user);
+		return user;
 	}
 
 	async function insert(args: UserSchema): Promise<DBUser> {
-		const existingUser = await UserModel.exists({ email: args.email });
+		const collection = db.collection<DBUser>('users');
+		const existingUser = await collection.findOne({ email: args.email });
 		if (existingUser) throw new Error('Email already exists');
-		const user = await UserModel.create(args);
-		return convertMongoUserToDBUser(user);
+		const user = await db.collection<UserSchema>('users').insertOne(args);
+		return {
+			...args,
+			_id: user.insertedId.toHexString(),
+		};
 	}
 
 	return Object.freeze<UsersRepositoryInterface>({

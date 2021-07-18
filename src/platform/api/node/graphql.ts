@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
-import mongoose from 'mongoose';
+import { createDatabaseConnection } from '../../../base/node/connectDB';
 import { DataSources } from '../../../base/node/dataSources';
 import { LOGIN_GRAPHQL_SCHEMA } from '../../login/node/loginSchema';
 import { resolvers } from './resolvers';
@@ -9,11 +9,9 @@ export function createGraphqlServerEndpoint() {
 		typeDefs: [LOGIN_GRAPHQL_SCHEMA],
 		resolvers,
 		context: async () => {
-			const connection = await mongoose.connect(process.env.MONGO_URL, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			});
-			const sources = DataSources(connection);
+			const client = await createDatabaseConnection();
+			const db = client.db('blogger');
+			const sources = DataSources(db);
 			return { sources };
 		},
 	});

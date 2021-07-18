@@ -28,23 +28,26 @@ describe('usersRepository', () => {
 	};
 
 	const mockModel = {
-		findOne: jest.fn().mockReturnValue({
-			exec: jest.fn().mockResolvedValueOnce(dbUser),
+		findOne: jest.fn().mockReturnValue(dbUser),
+		insertOne: jest.fn().mockResolvedValue({
+			...dbUser,
+			insertedId: {
+				toHexString: () => dbUser._id,
+			},
 		}),
-		exists: jest.fn().mockResolvedValue(false),
-		create: jest.fn().mockResolvedValue(dbUser),
 	};
 
-	const mockConnection = {
-		model: jest.fn().mockReturnValue(mockModel),
+	const dbMock = {
+		collection: jest.fn().mockReturnValue(mockModel),
 	};
 
 	beforeAll(async () => {
-		repository = UsersRepository(mockConnection as any);
+		repository = UsersRepository(dbMock as any);
 	});
 
 	describe('insert', () => {
 		it('should add and return the user with an id', async () => {
+			mockModel.findOne.mockResolvedValueOnce(undefined);
 			const user = await repository.insert(testUser);
 			expect(user).toHaveProperty('email', testUser.email);
 			expect(user).toHaveProperty('password', testUser.password);
@@ -53,7 +56,6 @@ describe('usersRepository', () => {
 		});
 
 		it('should throw error when user already exists', async () => {
-			mockModel.exists.mockResolvedValueOnce(true);
 			expect(repository.insert(testUser)).rejects.toThrow('Email already exists');
 		});
 	});
@@ -68,7 +70,7 @@ describe('usersRepository', () => {
 		});
 
 		it('should throw error when email does not exist', async () => {
-			mockModel.findOne.mockReturnValueOnce({ exec: jest.fn().mockResolvedValueOnce(null) });
+			mockModel.findOne.mockReturnValueOnce(undefined);
 			expect(repository.findByEmail(faker.internet.email())).rejects.toThrow(
 				'Email does not exists'
 			);
