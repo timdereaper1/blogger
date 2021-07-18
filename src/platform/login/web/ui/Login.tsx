@@ -1,12 +1,14 @@
+import { useMutation } from '@apollo/client';
 import { getIn, useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { UserLoginCredentials } from '../../common/types';
-import { verifyUserLoginCredentials } from '../services/loginApi';
-import { storeLoggedInUser } from '../services/storage';
+import { storeLoggedInUser } from '../common/storage';
+import { USER_LOGIN_MUTATION } from '../graphql/schema';
 import { loginValidateSchema } from '../services/validateSchema';
 
 export default function Login() {
 	const { push } = useRouter();
+	const [login] = useMutation(USER_LOGIN_MUTATION);
 	const form = useFormik<UserLoginCredentials>({
 		initialValues: {
 			email: '',
@@ -24,9 +26,11 @@ export default function Login() {
 	}
 
 	async function onSubmit() {
-		const { data, error } = await verifyUserLoginCredentials(form.values);
+		const { data, errors } = await login({
+			variables: { credentials: form.values },
+		});
 		form.setSubmitting(false);
-		if (!data || error) return;
+		if (!data) return;
 		form.resetForm();
 		storeLoggedInUser(data);
 		push('/');

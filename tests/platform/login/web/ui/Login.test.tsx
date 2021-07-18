@@ -1,41 +1,44 @@
 /**
  * @jest-environment jsdom
  */
+import { useMutation } from '@apollo/client';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { verifyUserLoginCredentials } from '../../../../../src/platform/login/web/services/loginApi';
-import { storeLoggedInUser } from '../../../../../src/platform/login/web/services/storage';
+import { storeLoggedInUser } from '../../../../../src/platform/login/web/common/storage';
 import Login from '../../../../../src/platform/login/web/ui/Login';
 
 jest.mock('next/router');
+jest.mock('@apollo/client');
 jest.mock('../../../../../src/platform/login/web/services/loginApi');
-jest.mock('../../../../../src/platform/login/web/services/storage');
-const mockedLoginApiService = verifyUserLoginCredentials as jest.MockedFunction<
-	typeof verifyUserLoginCredentials
->;
+jest.mock('../../../../../src/platform/login/web/common/storage');
 const mockedStoreLoggedInUser = storeLoggedInUser as jest.MockedFunction<typeof storeLoggedInUser>;
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const mockedUseMutation = useMutation as jest.MockedFunction<typeof useMutation>;
 
 describe('Login', () => {
 	const mockPush = jest.fn();
+	let loginMutation = jest.fn().mockReturnValue({
+		verifyCredentials: {
+			name: 'Test Blogger',
+			email: 'test@test.com',
+			token: 'token',
+		},
+	});
 
 	beforeEach(() => {
-		mockedLoginApiService.mockResolvedValue({
-			data: {
-				name: 'Test Blogger',
-				email: 'test@test.com',
-				token: 'token',
-			},
-		});
+		mockedUseMutation.mockReturnValue([
+			loginMutation,
+			{ called: true, client: {} as any, loading: false },
+		]);
 		mockedUseRouter.mockReturnValue({
 			push: mockPush,
 		} as any);
 	});
 
 	afterEach(() => {
-		mockedLoginApiService.mockReset();
+		mockedUseMutation.mockReset();
 		mockedUseRouter.mockReset();
 	});
 
@@ -73,7 +76,7 @@ describe('Login', () => {
 
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
-			expect(mockedLoginApiService).toHaveBeenCalledWith({
+			expect(loginMutation).toHaveBeenCalledWith({
 				email: 'test@test.com',
 				password: '123456',
 			});

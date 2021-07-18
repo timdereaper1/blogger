@@ -1,4 +1,4 @@
-import { storeInLocalStorage } from '../../../../base/web/services/storage';
+import { storeInLocalStorage } from '../../../../base/web/common/storage';
 import { LoggedInUser } from '../../common/types';
 
 export function storeLoggedInUser(authenticatedUser: LoggedInUser) {
