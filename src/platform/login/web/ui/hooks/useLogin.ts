@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import type { LoggedInUser, UserLoginCredentials } from '../../../common/types';
 
-const USER_LOGIN_MUTATION = gql`
+export const USER_LOGIN_MUTATION = gql`
 	mutation verifyCredentials($credentials: UserLoginCredentials!) {
 		verifyCredentials(credentials: $credentials) {
 			id
@@ -12,11 +12,11 @@ const USER_LOGIN_MUTATION = gql`
 	}
 `;
 
-interface VerifyCredentialsVariables {
+export interface VerifyCredentialsVariables {
 	credentials: UserLoginCredentials;
 }
 
-interface VerifyCredentialsMutationResponse {
+export interface VerifyCredentialsMutationResponse {
 	verifyCredentials: LoggedInUser | null;
 }
 
@@ -27,10 +27,15 @@ export function useLogin() {
 	>(USER_LOGIN_MUTATION);
 
 	async function login(credentials: UserLoginCredentials) {
-		const { data, errors } = await verifyCredentials({
-			variables: { credentials },
-		});
-		return { error: errors?.[0].message, data: data?.verifyCredentials };
+		try {
+			const { data, errors } = await verifyCredentials({
+				variables: { credentials },
+			});
+			if (errors) throw errors;
+			return { data: data.verifyCredentials };
+		} catch (error) {
+			return { error: error.message };
+		}
 	}
 
 	return login;
