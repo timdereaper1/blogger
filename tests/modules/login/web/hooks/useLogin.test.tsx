@@ -8,7 +8,7 @@ import {
 	useLogin,
 	USER_LOGIN_MUTATION,
 	VerifyCredentialsMutationResponse,
-} from 'src/platform/login/web/hooks/useLogin';
+} from 'src/modules/login/web/hooks/useLogin';
 import { renderMutationHook } from 'tests/reactTestUtils';
 
 describe('useLogin', () => {

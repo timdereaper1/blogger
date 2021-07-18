@@ -1,5 +1,5 @@
 import { GraphQLContext } from 'src/base/node/graphqlContext';
-import { UserLoginCredentials } from 'src/platform/login/common/types';
+import { UserLoginCredentials } from 'src/modules/login/common/types';
 import { verifyLoginCredentials } from './handlers/verifyLoginCredentials';
 
 export function verifyLoginCredentialsMutation(

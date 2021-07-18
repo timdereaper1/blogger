@@ -1,4 +1,4 @@
-import { loginValidateSchema } from 'src/platform/login/web/validateSchema';
+import { loginValidateSchema } from 'src/modules/login/web/validateSchema';
 
 describe('loginValidateSchema', () => {
 	it('should check email is formatted correctly', (done) => {
