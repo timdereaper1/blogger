@@ -1,7 +1,5 @@
-import { UsersRepositoryInterface } from './repositories/usersRepository';
+import { DataSourcesInterface } from './dataSources';
 
 export interface GraphQLContext {
-	sources: {
-		users: UsersRepositoryInterface;
-	};
+	sources: DataSourcesInterface;
 }
