@@ -1,55 +1,50 @@
 /**
  * @jest-environment jsdom
  */
-import { useMutation } from '@apollo/client';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { storeLoggedInUser } from '../../../../../src/platform/login/web/common/storage';
-import Login from '../../../../../src/platform/login/web/ui/Login';
+import { storeLoggedInUser } from 'src/platform/login/web/common/storage';
+import { useLogin } from 'src/platform/login/web/ui/hooks/useLogin';
+import Login from 'src/platform/login/web/ui/Login';
 
 jest.mock('next/router');
-jest.mock('@apollo/client');
-jest.mock('../../../../../src/platform/login/web/services/loginApi');
-jest.mock('../../../../../src/platform/login/web/common/storage');
+jest.mock('src/platform/login/web/common/storage');
+jest.mock('src/platform/login/web/ui/hooks/useLogin');
+
 const mockedStoreLoggedInUser = storeLoggedInUser as jest.MockedFunction<typeof storeLoggedInUser>;
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
-const mockedUseMutation = useMutation as jest.MockedFunction<typeof useMutation>;
+const mockedUseLogin = useLogin as jest.MockedFunction<typeof useLogin>;
 
 describe('Login', () => {
-	const mockPush = jest.fn();
-	let loginMutation = jest.fn().mockReturnValue({
-		verifyCredentials: {
+	const mockMutation = jest.fn().mockReturnValue({
+		data: {
 			name: 'Test Blogger',
 			email: 'test@test.com',
 			token: 'token',
 		},
 	});
+	const push = jest.fn();
 
 	beforeEach(() => {
-		mockedUseMutation.mockReturnValue([
-			loginMutation,
-			{ called: true, client: {} as any, loading: false },
-		]);
-		mockedUseRouter.mockReturnValue({
-			push: mockPush,
-		} as any);
+		mockedUseLogin.mockReturnValue(mockMutation);
+		mockedUseRouter.mockReturnValue({ push } as any);
 	});
 
 	afterEach(() => {
-		mockedUseMutation.mockReset();
+		mockedUseLogin.mockReset();
 		mockedUseRouter.mockReset();
+		mockedStoreLoggedInUser.mockReset();
+		push.mockReset();
 	});
 
 	it('should render correctly', async () => {
 		render(<Login />);
-		await waitFor(() => {
-			expect(screen.getByTestId(/title/)).toBeInTheDocument();
-			expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
-			expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
-			expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
-		});
+		expect(screen.getByTestId(/title/)).toBeInTheDocument();
+		expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
+		expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
 	});
 
 	it('should show/enter the user email', async () => {
@@ -73,10 +68,11 @@ describe('Login', () => {
 
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
 		expect(screen.getByLabelText(/Password/)).toHaveDisplayValue('123456');
+		await screen.findByDisplayValue('123456');
 
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
-			expect(loginMutation).toHaveBeenCalledWith({
+			expect(mockMutation).toHaveBeenCalledWith({
 				email: 'test@test.com',
 				password: '123456',
 			});
@@ -85,15 +81,14 @@ describe('Login', () => {
 
 	it('should disable login button when form is invalid', async () => {
 		render(<Login />);
-		await waitFor(() => {
-			expect(screen.getByRole('button', { name: 'Login' })).toBeDisabled();
-		});
+		expect(screen.getByRole('button', { name: 'Login' })).toBeDisabled();
 	});
 
 	it('should show loading indicator when submitting', async () => {
 		render(<Login />);
 		userEvent.type(screen.getByLabelText(/Email/), 'test@test.com');
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
+		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
 			expect(screen.getByTestId(/loading/)).toBeInTheDocument();
@@ -104,6 +99,7 @@ describe('Login', () => {
 		render(<Login />);
 		userEvent.type(screen.getByLabelText(/Email/), 'test@test.com');
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
+		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
 			expect(screen.getByLabelText(/Email/)).toHaveDisplayValue('');
@@ -131,9 +127,14 @@ describe('Login', () => {
 	it('should store user info when logged in successfully', async () => {
 		render(<Login />);
 		userEvent.type(screen.getByLabelText(/Email/), 'test@test.com');
+		await screen.findByDisplayValue('test@test.com');
+
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
+		await screen.findByDisplayValue('123456');
+
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
+			expect(mockedStoreLoggedInUser).toHaveBeenCalledTimes(1);
 			expect(mockedStoreLoggedInUser).toHaveBeenCalledWith({
 				name: 'Test Blogger',
 				email: 'test@test.com',
@@ -146,9 +147,10 @@ describe('Login', () => {
 		render(<Login />);
 		userEvent.type(screen.getByLabelText(/Email/), 'test@test.com');
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
+		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
-			expect(mockPush).toHaveBeenCalledWith('/');
+			expect(push).toHaveBeenCalledWith('/');
 		});
 	});
 });

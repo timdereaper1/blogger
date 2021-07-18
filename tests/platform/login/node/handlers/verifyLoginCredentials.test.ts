@@ -1,11 +1,11 @@
 import * as argon from 'argon2';
 import faker from 'faker';
-import { UsersRepositoryInterface } from '../../../../../src/base/node/repositories/usersRepository';
-import { DBUser } from '../../../../../src/base/node/schemas/types';
-import { createAuthenticationToken } from '../../../../../src/base/node/tokens';
-import { verifyLoginCredentials } from '../../../../../src/platform/login/node/handlers/verifyLoginCredentials';
+import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
+import { DBUser } from 'src/base/node/schemas/types';
+import { createAuthenticationToken } from 'src/base/node/tokens';
+import { verifyLoginCredentials } from 'src/platform/login/node/handlers/verifyLoginCredentials';
 
-jest.mock('../../../../../src/base/node/tokens');
+jest.mock('src/base/node/tokens');
 
 type CreateToken = typeof createAuthenticationToken;
 const mockedCreateToken = createAuthenticationToken as jest.MockedFunction<CreateToken>;

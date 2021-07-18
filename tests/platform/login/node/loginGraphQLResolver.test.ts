@@ -1,10 +1,10 @@
 import faker from 'faker';
-import { GraphQLContext } from '../../../../src/base/node/graphqlContext';
-import { UserLoginCredentials } from '../../../../src/platform/login/common/types';
-import { verifyLoginCredentials } from '../../../../src/platform/login/node/handlers/verifyLoginCredentials';
-import { verifyLoginCredentialsMutation } from '../../../../src/platform/login/node/loginGraphQLResolver';
+import { GraphQLContext } from 'src/base/node/graphqlContext';
+import { UserLoginCredentials } from 'src/platform/login/common/types';
+import { verifyLoginCredentials } from 'src/platform/login/node/handlers/verifyLoginCredentials';
+import { verifyLoginCredentialsMutation } from 'src/platform/login/node/loginGraphQLResolver';
 
-jest.mock('../../../../src/platform/login/node/handlers/verifyLoginCredentials');
+jest.mock('src/platform/login/node/handlers/verifyLoginCredentials');
 
 type VerifyLoginType = typeof verifyLoginCredentials;
 const mockedVerifyLogin = verifyLoginCredentials as jest.MockedFunction<VerifyLoginType>;

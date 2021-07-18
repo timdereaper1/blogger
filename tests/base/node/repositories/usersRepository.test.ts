@@ -1,15 +1,9 @@
-import { config } from 'dotenv';
 import faker from 'faker';
-import path from 'path';
 import {
 	UsersRepository,
 	UsersRepositoryInterface,
-} from '../../../../src/base/node/repositories/usersRepository';
-import { DBUser, UserSchema } from '../../../../src/base/node/schemas/types';
-
-config({
-	path: path.join(process.cwd(), '.env.local'),
-});
+} from 'src/base/node/repositories/usersRepository';
+import { DBUser, UserSchema } from 'src/base/node/schemas/types';
 
 describe('usersRepository', () => {
 	let repository: UsersRepositoryInterface;
