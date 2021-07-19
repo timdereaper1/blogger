@@ -4,7 +4,7 @@ import { BadRequestError } from 'src/base/common/errors';
 import { DBUser } from 'src/base/node/repositories/types';
 import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
-import { verifyLoginCredentials } from 'src/modules/login/node/handlers/verifyLoginCredentials';
+import { verifyLoginCredentials } from 'src/modules/authentication/node/handlers/verifyLoginCredentials';
 
 jest.mock('src/base/node/tokens');
 jest.mock('src/base/node/logging');

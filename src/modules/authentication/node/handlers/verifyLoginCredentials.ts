@@ -4,7 +4,7 @@ import { BadRequestError } from 'src/base/common/errors';
 import { processRequestError } from 'src/base/node/errorHandling';
 import type { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
-import type { LoggedInUser, UserLoginCredentials } from 'src/modules/login/common/types';
+import type { LoggedInUser, UserLoginCredentials } from 'src/modules/authentication/common/types';
 
 export async function verifyLoginCredentials(
 	usersRepository: UsersRepositoryInterface,

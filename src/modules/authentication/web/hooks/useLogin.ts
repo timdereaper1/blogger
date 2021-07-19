@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import type { LoggedInUser, UserLoginCredentials } from 'src/modules/login/common/types';
+import type { LoggedInUser, UserLoginCredentials } from 'src/modules/authentication/common/types';
 
 export const USER_LOGIN_MUTATION = gql`
 	mutation verifyCredentials($credentials: UserLoginCredentials!) {

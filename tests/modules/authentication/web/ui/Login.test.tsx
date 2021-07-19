@@ -5,13 +5,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useLogin } from 'src/modules/login/web/hooks/useLogin';
-import { storeLoggedInUser } from 'src/modules/login/web/storage';
-import Login from 'src/modules/login/web/ui/Login';
+import { useLogin } from 'src/modules/authentication/web/hooks/useLogin';
+import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
+import Login from 'src/modules/authentication/web/ui/Login';
 
 jest.mock('next/router');
-jest.mock('src/modules/login/web/storage');
-jest.mock('src/modules/login/web/hooks/useLogin');
+jest.mock('src/modules/authentication/web/storage');
+jest.mock('src/modules/authentication/web/hooks/useLogin');
 
 const mockedStoreLoggedInUser = storeLoggedInUser as jest.MockedFunction<typeof storeLoggedInUser>;
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
