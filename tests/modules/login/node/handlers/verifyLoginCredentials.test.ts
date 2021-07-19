@@ -1,11 +1,13 @@
 import * as argon from 'argon2';
 import faker from 'faker';
+import { BadRequestError } from 'src/base/common/errors';
 import { DBUser } from 'src/base/node/repositories/types';
 import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { verifyLoginCredentials } from 'src/modules/login/node/handlers/verifyLoginCredentials';
 
 jest.mock('src/base/node/tokens');
+jest.mock('src/base/node/logging');
 
 type CreateToken = typeof createAuthenticationToken;
 const mockedCreateToken = createAuthenticationToken as jest.MockedFunction<CreateToken>;
@@ -38,16 +40,11 @@ describe('verifyLoginCredentials', () => {
 		mockedCreateToken.mockReset();
 	});
 
-	it('should throw an error if user does not exist', () => {
-		userRepository.findByEmail.mockRejectedValueOnce('Email does not exist');
-		const credentials = { email: 'undefined', password: 'undefined' };
-		const promise = verifyLoginCredentials(userRepository, credentials);
-		expect(promise).rejects.toThrow('Invalid login credentials');
-	});
-
 	it('should throw error if password does not match', () => {
-		const credentials = { email: dbUser.email, password: 'undefined' };
-		const promise = verifyLoginCredentials(userRepository, credentials);
+		const promise = verifyLoginCredentials(userRepository, {
+			...credentials,
+			password: 'undefined',
+		});
 		expect(promise).rejects.toThrow('Invalid login credentials');
 	});
 
@@ -64,5 +61,16 @@ describe('verifyLoginCredentials', () => {
 	it('should create a token user id', async () => {
 		await verifyLoginCredentials(userRepository, credentials);
 		expect(mockedCreateToken).toHaveBeenCalledWith(dbUser._id);
+	});
+
+	it('should throw an error if user does not exist', () => {
+		userRepository.findByEmail.mockRejectedValueOnce(
+			new BadRequestError('Email does not exist')
+		);
+		const promise = verifyLoginCredentials(userRepository, {
+			email: 'undefined',
+			password: 'undefined',
+		});
+		expect(promise).rejects.toThrow('Invalid login credentials');
 	});
 });
