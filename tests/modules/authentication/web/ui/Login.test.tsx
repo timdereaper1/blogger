@@ -150,7 +150,7 @@ describe('Login', () => {
 		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
-			expect(push).toHaveBeenCalledWith('/');
+			expect(push).toHaveBeenCalledWith('/dashboard');
 		});
 	});
 });

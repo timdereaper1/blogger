@@ -1,5 +1,5 @@
-import { getIn, useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import { useForm } from 'src/base/web/hooks/useForm';
 import { UserLoginCredentials } from 'src/modules/authentication/common/types';
 import { useLogin } from 'src/modules/authentication/web/hooks/useLogin';
 import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
@@ -8,7 +8,7 @@ import { loginValidateSchema } from 'src/modules/authentication/web/validateSche
 export default function Login() {
 	const { push } = useRouter();
 	const verifyCredentials = useLogin();
-	const form = useFormik<UserLoginCredentials>({
+	const form = useForm<UserLoginCredentials>({
 		initialValues: {
 			email: '',
 			password: '',
@@ -17,20 +17,14 @@ export default function Login() {
 		validationSchema: loginValidateSchema,
 	});
 
-	function getFieldError(field: keyof UserLoginCredentials): string | null {
-		const touched = getIn(form.touched, field);
-		const error = getIn(form.errors, field);
-		return touched && error ? error : null;
-	}
-
 	async function onSubmit() {
 		form.setSubmitting(true);
-		const { data, error } = await verifyCredentials(form.values);
+		const { data } = await verifyCredentials(form.values);
 		form.setSubmitting(false);
 		if (!data) return;
 		form.resetForm();
 		storeLoggedInUser(data);
-		push('/');
+		push('/dashboard');
 	}
 
 	return (
@@ -49,8 +43,8 @@ export default function Login() {
 						onBlur={form.handleBlur}
 					/>
 				</label>
-				{getFieldError('email') ? (
-					<small data-testid="error-helper">{getFieldError('email')}</small>
+				{form.getFieldError('email') ? (
+					<small data-testid="error-helper">{form.getFieldError('email')}</small>
 				) : null}
 				<label htmlFor="password">
 					Password
@@ -64,8 +58,8 @@ export default function Login() {
 						onChange={form.handleChange}
 					/>
 				</label>
-				{getFieldError('password') ? (
-					<small data-testid="error-helper">{getFieldError('password')}</small>
+				{form.getFieldError('password') ? (
+					<small data-testid="error-helper">{form.getFieldError('password')}</small>
 				) : null}
 				<button disabled={!(form.dirty && form.isValid)} type="submit">
 					Login
