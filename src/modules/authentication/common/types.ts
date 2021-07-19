@@ -9,3 +9,9 @@ export interface LoggedInUser {
 	token: string;
 	id: string;
 }
+
+export interface UserSignUpCredentials {
+	email: string;
+	name: string;
+	password: string;
+}
