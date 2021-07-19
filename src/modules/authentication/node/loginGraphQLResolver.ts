@@ -8,16 +8,16 @@ import { verifyLoginCredentials } from './handlers/verifyLoginCredentials';
 
 export function verifyLoginCredentialsMutation(
 	_parent: unknown,
-	args: UserLoginCredentials,
+	args: { credentials: UserLoginCredentials },
 	context: GraphQLContext
 ) {
-	return verifyLoginCredentials(context.sources.users, args);
+	return verifyLoginCredentials(context.sources.users, args.credentials);
 }
 
 export function signUpAccountMutation(
 	_parent: unknown,
-	args: UserSignUpCredentials,
+	args: { credentials: UserSignUpCredentials },
 	context: GraphQLContext
 ) {
-	return signUpUserAccount(context.sources.users, args);
+	return signUpUserAccount(context.sources.users, args.credentials);
 }

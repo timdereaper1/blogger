@@ -1,5 +1,6 @@
 import faker from 'faker';
-import { DBUser, UserSchema } from 'src/base/node/repositories/types';
+import { ObjectId } from 'mongodb';
+import { UserSchema } from 'src/base/node/repositories/types';
 import {
 	UsersRepository,
 	UsersRepositoryInterface,
@@ -14,20 +15,18 @@ describe('usersRepository', () => {
 		name: faker.name.findName(),
 	};
 
-	const dbUser: DBUser = {
+	const dbUser: UserSchema & { _id: ObjectId } = {
 		email: testUser.email,
 		password: testUser.password,
 		name: testUser.name,
-		_id: faker.datatype.uuid(),
+		_id: new ObjectId(),
 	};
 
 	const mockModel = {
 		findOne: jest.fn().mockReturnValue(dbUser),
 		insertOne: jest.fn().mockResolvedValue({
 			...dbUser,
-			insertedId: {
-				toHexString: () => dbUser._id,
-			},
+			insertedId: new ObjectId(),
 		}),
 	};
 

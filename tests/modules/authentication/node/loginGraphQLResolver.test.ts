@@ -29,7 +29,7 @@ describe('verifyCredentials', () => {
 			email: faker.internet.email(),
 			password: faker.internet.password(),
 		};
-		await verifyLoginCredentialsMutation(undefined, credentials, context);
+		await verifyLoginCredentialsMutation(undefined, { credentials }, context);
 		expect(verifyLoginCredentials).toHaveBeenCalledWith(context.sources.users, credentials);
 	});
 });
@@ -41,7 +41,7 @@ describe('signUpAccountMutation', () => {
 			password: faker.internet.password(),
 			name: faker.name.findName(),
 		};
-		await signUpAccountMutation(undefined, credentials, context);
+		await signUpAccountMutation(undefined, { credentials }, context);
 		expect(signUpUserAccount).toHaveBeenCalledWith(context.sources.users, credentials);
 	});
 });

@@ -4,17 +4,11 @@ import { appendToFile, createDirectory, createFile } from 'src/base/node/files';
 jest.mock('fs');
 const mockedFs = fs as jest.Mocked<typeof fs>;
 
-const mockedStatSync = {
-	isDirectory: jest.fn().mockReturnValue(false),
-	isFile: jest.fn().mockReturnValue(false),
-};
-
 beforeEach(() => {
-	mockedFs.statSync.mockReturnValue(mockedStatSync as any);
+	mockedFs.existsSync.mockReturnValue(false);
 });
 
 afterEach(() => {
-	mockedStatSync.isDirectory.mockReset();
 	mockedFs.mkdirSync.mockReset();
 });
 
@@ -25,7 +19,7 @@ describe('createDirectory', () => {
 	});
 
 	it('should not create directory if it already exists', () => {
-		mockedStatSync.isDirectory.mockReturnValueOnce(true);
+		mockedFs.existsSync.mockReturnValue(true);
 		createDirectory('log');
 		expect(mockedFs.mkdirSync).not.toHaveBeenCalled();
 	});
