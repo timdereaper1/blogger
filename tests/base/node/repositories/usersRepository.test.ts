@@ -13,6 +13,7 @@ describe('usersRepository', () => {
 		email: faker.internet.email(),
 		password: faker.internet.password(),
 		name: faker.name.findName(),
+		privileges: ['user', 'super_admin'],
 	};
 
 	const dbUser: UserSchema & { _id: ObjectId } = {
@@ -20,6 +21,7 @@ describe('usersRepository', () => {
 		password: testUser.password,
 		name: testUser.name,
 		_id: new ObjectId(),
+		privileges: ['user', 'super_admin'],
 	};
 
 	const mockModel = {
@@ -45,6 +47,7 @@ describe('usersRepository', () => {
 			expect(user).toHaveProperty('email', testUser.email);
 			expect(user).toHaveProperty('password', testUser.password);
 			expect(user).toHaveProperty('name', testUser.name);
+			expect(user).toHaveProperty('privileges', testUser.privileges);
 			expect(user).toHaveProperty('_id');
 		});
 
@@ -59,6 +62,7 @@ describe('usersRepository', () => {
 			expect(user).toHaveProperty('email', testUser.email);
 			expect(user).toHaveProperty('password', testUser.password);
 			expect(user).toHaveProperty('name', testUser.name);
+			expect(user).toHaveProperty('privileges', testUser.privileges);
 			expect(user).toHaveProperty('_id');
 		});
 

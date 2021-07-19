@@ -6,6 +6,7 @@ export const typeDefs = gql`
 		name: String!
 		email: String!
 		token: String
+		privileges: [String!]!
 	}
 
 	input UserLoginCredentials {

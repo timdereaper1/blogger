@@ -27,6 +27,7 @@ describe('verifyLoginCredentials', () => {
 			email: credentials.email,
 			_id: faker.datatype.uuid(),
 			password: await argon.hash(credentials.password),
+			privileges: ['super_admin', 'user'],
 		};
 		userRepository = {
 			findByEmail: jest.fn().mockResolvedValue(dbUser),
@@ -55,6 +56,7 @@ describe('verifyLoginCredentials', () => {
 			email: dbUser.email,
 			name: dbUser.name,
 			token: 'token',
+			privileges: ['super_admin', 'user'],
 		});
 	});
 

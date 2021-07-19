@@ -4,13 +4,16 @@ import { BadRequestError } from 'src/base/common/errors';
 import { processRequestError } from 'src/base/node/errorHandling';
 import type { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
-import type { LoggedInUser, UserLoginCredentials } from 'src/modules/authentication/common/types';
+import type {
+	AuthenticatedUser,
+	UserLoginCredentials,
+} from 'src/modules/authentication/common/types';
 import { formatDBUserToAuthUserStructure } from 'src/modules/authentication/node/mappers';
 
 export async function verifyLoginCredentials(
 	usersRepository: UsersRepositoryInterface,
 	credentials: UserLoginCredentials
-): Promise<LoggedInUser> {
+): Promise<AuthenticatedUser> {
 	try {
 		const user = await usersRepository.findByEmail(credentials.email);
 		const validPassword = await argon.verify(user.password, credentials.password);

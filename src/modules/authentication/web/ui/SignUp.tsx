@@ -14,6 +14,7 @@ export default function SignUp() {
 			password: '',
 			name: '',
 			confirmPassword: '',
+			privileges: ['user'],
 		},
 		onSubmit,
 		validationSchema: signUpValidateSchema,

@@ -5,7 +5,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import faker from 'faker';
 import { useRouter } from 'next/router';
-import { LoggedInUser } from 'src/modules/authentication/common/types';
+import type { AuthenticatedUser } from 'src/modules/authentication/common/types';
 import { useSignUp } from 'src/modules/authentication/web/hooks/useSignUp';
 import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
 import SignUp from 'src/modules/authentication/web/ui/SignUp';
@@ -18,14 +18,15 @@ const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockedStoreUser = storeLoggedInUser as jest.MockedFunction<typeof storeLoggedInUser>;
 
 describe('SignUp', () => {
-	const responseData: LoggedInUser = {
+	const responseData: AuthenticatedUser = {
 		name: 'John Doe',
 		email: 'john.doe@gmail.com',
 		token: 'token',
 		id: faker.datatype.uuid(),
+		privileges: ['super_admin', 'user'],
 	};
 	const promise = Promise.resolve({ data: responseData });
-	let signUpAccount: jest.Mock<Promise<{ data: LoggedInUser }>, []>;
+	let signUpAccount: jest.Mock<Promise<{ data: AuthenticatedUser }>, []>;
 	let push: jest.Mock;
 
 	beforeEach(() => {
@@ -174,6 +175,7 @@ describe('SignUp', () => {
 			email: 'john.doe@gmail.com',
 			password: '123456',
 			confirmPassword: '123456',
+			privileges: ['user'],
 		});
 		expect(mockedStoreUser).toHaveBeenCalledWith(responseData);
 		expect(push).toHaveBeenCalledWith('/dashboard');

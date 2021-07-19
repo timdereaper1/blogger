@@ -3,8 +3,10 @@
  */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import faker from 'faker';
 import { useRouter } from 'next/router';
 import React from 'react';
+import type { AuthenticatedUser } from 'src/modules/authentication/common/types';
 import { useLogin } from 'src/modules/authentication/web/hooks/useLogin';
 import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
 import Login from 'src/modules/authentication/web/ui/Login';
@@ -18,12 +20,15 @@ const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockedUseLogin = useLogin as jest.MockedFunction<typeof useLogin>;
 
 describe('Login', () => {
+	const authenticatedUser: AuthenticatedUser = {
+		name: faker.name.findName(),
+		email: faker.internet.email(),
+		token: 'token',
+		id: faker.datatype.uuid(),
+		privileges: ['user', 'super_admin'],
+	};
 	const mockMutation = jest.fn().mockReturnValue({
-		data: {
-			name: 'Test Blogger',
-			email: 'test@test.com',
-			token: 'token',
-		},
+		data: authenticatedUser,
 	});
 	const push = jest.fn();
 
@@ -135,11 +140,7 @@ describe('Login', () => {
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
 			expect(mockedStoreLoggedInUser).toHaveBeenCalledTimes(1);
-			expect(mockedStoreLoggedInUser).toHaveBeenCalledWith({
-				name: 'Test Blogger',
-				email: 'test@test.com',
-				token: 'token',
-			});
+			expect(mockedStoreLoggedInUser).toHaveBeenCalledWith(authenticatedUser);
 		});
 	});
 

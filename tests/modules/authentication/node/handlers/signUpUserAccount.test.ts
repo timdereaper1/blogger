@@ -1,5 +1,6 @@
 import faker from 'faker';
 import { BadRequestError } from 'src/base/common/errors';
+import { DBUser } from 'src/base/node/repositories/types';
 import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { UserSignUpCredentials } from 'src/modules/authentication/common/types';
@@ -18,11 +19,14 @@ describe('signUpUserAccount', () => {
 		email: faker.internet.email(),
 		password: faker.internet.password(),
 		name: faker.name.findName(),
+		privileges: ['user'],
 	};
-	const dbUser = {
+	const dbUser: DBUser = {
 		name: signUpCredentials.name,
 		email: signUpCredentials.email,
 		_id: faker.datatype.uuid(),
+		privileges: ['user', 'super_admin'],
+		password: faker.internet.password(),
 	};
 	const usersRepository: MockedRepository = {
 		findByEmail: jest.fn(),
@@ -41,6 +45,7 @@ describe('signUpUserAccount', () => {
 		const user = await signUpUserAccount(usersRepository, signUpCredentials);
 		expect(user).toHaveProperty('id', dbUser._id);
 		expect(user).toHaveProperty('token', 'token');
+		expect(user).toHaveProperty('privileges');
 	});
 
 	it('should throw an error if email already exists', async () => {

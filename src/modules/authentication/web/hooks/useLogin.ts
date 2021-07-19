@@ -1,15 +1,18 @@
 import { gql, useMutation } from '@apollo/client';
-import type { LoggedInUser, UserLoginCredentials } from 'src/modules/authentication/common/types';
+import type {
+	AuthenticatedUser,
+	UserLoginCredentials,
+} from 'src/modules/authentication/common/types';
+import { AUTHENTICATED_USER_FRAGMENT } from 'src/modules/authentication/web/fragments';
 
 export const USER_LOGIN_MUTATION = gql`
 	mutation verifyCredentials($credentials: UserLoginCredentials!) {
 		verifyCredentials(credentials: $credentials) {
-			id
-			name
-			email
-			token
+			...AuthenticatedUser
 		}
 	}
+
+	${AUTHENTICATED_USER_FRAGMENT}
 `;
 
 export interface VerifyCredentialsVariables {
@@ -17,7 +20,7 @@ export interface VerifyCredentialsVariables {
 }
 
 export interface VerifyCredentialsMutationResponse {
-	verifyCredentials: LoggedInUser | null;
+	verifyCredentials: AuthenticatedUser | null;
 }
 
 export function useLogin() {

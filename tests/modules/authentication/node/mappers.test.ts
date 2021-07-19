@@ -9,6 +9,7 @@ describe('formatDBUserToAuthUserStructure', () => {
 			email: faker.internet.email(),
 			name: faker.name.findName(),
 			password: faker.internet.password(),
+			privileges: ['super_admin'],
 		};
 		const token = faker.random.alphaNumeric();
 		const result = formatDBUserToAuthUserStructure(dbUser, token);
@@ -17,6 +18,7 @@ describe('formatDBUserToAuthUserStructure', () => {
 			email: dbUser.email,
 			name: dbUser.name,
 			token,
+			privileges: ['super_admin'],
 		});
 	});
 });

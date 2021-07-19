@@ -4,6 +4,7 @@
 import { act } from '@testing-library/react-hooks';
 import faker from 'faker';
 import { GraphQLError } from 'graphql';
+import type { AuthenticatedUser } from 'src/modules/authentication/common/types';
 import {
 	useLogin,
 	USER_LOGIN_MUTATION,
@@ -12,11 +13,12 @@ import {
 import { renderMutationHook } from 'tests/reactTestUtils';
 
 describe('useLogin', () => {
-	const verifyCredentials = {
+	const verifyCredentials: AuthenticatedUser = {
 		email: faker.internet.email(),
 		id: faker.datatype.uuid(),
 		name: faker.name.findName(),
 		token: faker.random.alphaNumeric(),
+		privileges: ['super_admin', 'user'],
 	};
 
 	const credentials = {
