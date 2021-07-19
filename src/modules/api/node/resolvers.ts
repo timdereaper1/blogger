@@ -1,4 +1,7 @@
-import { loginGraphQLMutationResolvers } from 'src/modules/authentication/node/loginGraphQLResolver';
+import {
+	signUpAccountMutation,
+	verifyLoginCredentialsMutation,
+} from 'src/modules/authentication/node/loginGraphQLResolver';
 
 export const resolvers = {
 	Query: {
@@ -6,5 +9,8 @@ export const resolvers = {
 			return 'Hello world';
 		},
 	},
-	Mutation: Object.assign({}, loginGraphQLMutationResolvers),
+	Mutation: {
+		verifyCredentials: verifyLoginCredentialsMutation,
+		signUpAccount: signUpAccountMutation,
+	},
 };

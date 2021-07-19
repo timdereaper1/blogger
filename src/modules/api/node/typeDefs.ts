@@ -13,11 +13,18 @@ export const typeDefs = gql`
 		password: String!
 	}
 
+	input UserSignUpCredentials {
+		password: String!
+		email: String!
+		name: String!
+	}
+
 	type Query {
 		hello: String
 	}
 
 	type Mutation {
 		verifyCredentials(credentials: UserLoginCredentials): User
+		signUpAccount(credentials: UserSignUpCredentials): User
 	}
 `;

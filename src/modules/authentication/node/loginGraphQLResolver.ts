@@ -1,5 +1,9 @@
 import { GraphQLContext } from 'src/base/node/graphqlContext';
-import { UserLoginCredentials } from 'src/modules/authentication/common/types';
+import {
+	UserLoginCredentials,
+	UserSignUpCredentials,
+} from 'src/modules/authentication/common/types';
+import { signUpUserAccount } from './handlers/signUpUserAccount';
 import { verifyLoginCredentials } from './handlers/verifyLoginCredentials';
 
 export function verifyLoginCredentialsMutation(
@@ -10,6 +14,10 @@ export function verifyLoginCredentialsMutation(
 	return verifyLoginCredentials(context.sources.users, args);
 }
 
-export const loginGraphQLMutationResolvers = {
-	verifyCredentials: verifyLoginCredentialsMutation,
-};
+export function signUpAccountMutation(
+	_parent: unknown,
+	args: UserSignUpCredentials,
+	context: GraphQLContext
+) {
+	return signUpUserAccount(context.sources.users, args);
+}
