@@ -2,7 +2,7 @@
 	"name": "blogger",
 	"version": "1.0.0",
 	"scripts": {
-		"dev": "next",
+		"dev": "next dev",
 		"test": "jest --watchAll"
 	},
 	"license": "MIT",
@@ -13,7 +13,6 @@
 		"formik": "^2.2.9",
 		"graphql": "^15.5.1",
 		"jsonwebtoken": "^8.5.1",
-		"micro": "^9.3.4",
 		"mongodb": "^4.0.0",
 		"next": "^11.0.1",
 		"react": "^17.0.2",
