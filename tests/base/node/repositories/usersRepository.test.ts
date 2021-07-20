@@ -1,15 +1,10 @@
-import { config } from 'dotenv';
 import faker from 'faker';
-import path from 'path';
+import { ObjectId } from 'mongodb';
+import { UserSchema } from 'src/base/node/repositories/types';
 import {
 	UsersRepository,
 	UsersRepositoryInterface,
-} from '../../../../src/base/node/repositories/usersRepository';
-import { DBUser, UserSchema } from '../../../../src/base/node/schemas/types';
-
-config({
-	path: path.join(process.cwd(), '.env.local'),
-});
+} from 'src/base/node/repositories/usersRepository';
 
 describe('usersRepository', () => {
 	let repository: UsersRepositoryInterface;
@@ -18,22 +13,22 @@ describe('usersRepository', () => {
 		email: faker.internet.email(),
 		password: faker.internet.password(),
 		name: faker.name.findName(),
+		privileges: ['user', 'super_admin'],
 	};
 
-	const dbUser: DBUser = {
+	const dbUser: UserSchema & { _id: ObjectId } = {
 		email: testUser.email,
 		password: testUser.password,
 		name: testUser.name,
-		_id: faker.datatype.uuid(),
+		_id: new ObjectId(),
+		privileges: ['user', 'super_admin'],
 	};
 
 	const mockModel = {
 		findOne: jest.fn().mockReturnValue(dbUser),
 		insertOne: jest.fn().mockResolvedValue({
 			...dbUser,
-			insertedId: {
-				toHexString: () => dbUser._id,
-			},
+			insertedId: new ObjectId(),
 		}),
 	};
 
@@ -52,6 +47,7 @@ describe('usersRepository', () => {
 			expect(user).toHaveProperty('email', testUser.email);
 			expect(user).toHaveProperty('password', testUser.password);
 			expect(user).toHaveProperty('name', testUser.name);
+			expect(user).toHaveProperty('privileges', testUser.privileges);
 			expect(user).toHaveProperty('_id');
 		});
 
@@ -66,6 +62,7 @@ describe('usersRepository', () => {
 			expect(user).toHaveProperty('email', testUser.email);
 			expect(user).toHaveProperty('password', testUser.password);
 			expect(user).toHaveProperty('name', testUser.name);
+			expect(user).toHaveProperty('privileges', testUser.privileges);
 			expect(user).toHaveProperty('_id');
 		});
 

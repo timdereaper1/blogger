@@ -1,6 +1,5 @@
-import { createGraphqlServerEndpoint } from '../../platform/api/node/graphql';
-
-const server = createGraphqlServerEndpoint();
+import { NextApiRequest, NextApiResponse } from 'next';
+import { createGraphqlServerEndpoint } from 'src/modules/api/node/graphql';
 
 export const config = {
 	api: {
@@ -8,4 +7,8 @@ export const config = {
 	},
 };
 
-export default server.createHandler({ path: '/api/graphql' });
+export default async function handleNextJSApiRequest(req: NextApiRequest, res: NextApiResponse) {
+	const server = await createGraphqlServerEndpoint();
+	const graphqlHandler = server.createHandler({ path: '/api/graphql' });
+	return graphqlHandler(req, res);
+}

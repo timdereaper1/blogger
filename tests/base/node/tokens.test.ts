@@ -1,4 +1,4 @@
-import { createAuthenticationToken } from '../../../src/base/node/tokens';
+import { createAuthenticationToken } from 'src/base/node/tokens';
 
 describe('createAuthenticationToken', () => {
 	it('should return a unique string', () => {
