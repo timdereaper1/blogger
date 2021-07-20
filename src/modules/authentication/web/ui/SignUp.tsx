@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useForm } from 'src/base/web/hooks/useForm';
+import Notification from 'src/base/web/ui/Notification';
 import { useSignUp } from 'src/modules/authentication/web/hooks/useSignUp';
 import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
 import { UserSignUpCredentialsForm } from 'src/modules/authentication/web/types';
@@ -98,6 +99,7 @@ export default function SignUp() {
 					Sign Up
 				</button>
 			</form>
+			<Notification />
 		</main>
 	);
 }

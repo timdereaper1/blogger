@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
+import { showErrorNotification } from 'src/base/web/notifiers';
 
 export function useGraphqlMutation<TData = any, TVariables = any>(query: DocumentNode) {
 	const [mutation] = useMutation<any, TVariables>(query);
@@ -12,6 +13,7 @@ export function useGraphqlMutation<TData = any, TVariables = any>(query: Documen
 			if (response.errors) throw response.errors;
 			return { data: Object.values<TData[keyof TData]>(response.data)[0] };
 		} catch (error) {
+			showErrorNotification(error.message);
 			return { error: error.message };
 		}
 	};

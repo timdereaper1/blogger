@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useForm } from 'src/base/web/hooks/useForm';
+import Notification from 'src/base/web/ui/Notification';
 import { UserLoginCredentials } from 'src/modules/authentication/common/types';
 import { useLogin } from 'src/modules/authentication/web/hooks/useLogin';
 import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
@@ -66,6 +67,7 @@ export default function Login() {
 				</button>
 				{form.isSubmitting ? <i data-testid="loading">loading</i> : null}
 			</form>
+			<Notification />
 		</main>
 	);
 }
