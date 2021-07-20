@@ -12,7 +12,7 @@ type MutationHook<T, P> = () => (args: P) => Promise<MutationResponse<T>>;
 function useTestMutation<T, P>(hook: MutationHook<T, P>) {
 	const [response, setResponse] = useState<MutationResponse<T> | null>(null);
 	const mutation = hook();
-	async function handleChange(args: P) {
+	async function handleChange(args?: P) {
 		const result = await mutation(args);
 		setResponse(result);
 	}

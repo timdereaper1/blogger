@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useGraphqlMutation } from 'src/base/web/hooks/useGraphqlMutation';
 import type {
 	AuthenticatedUser,
 	UserSignUpCredentials,
@@ -11,21 +11,17 @@ export interface SignUpAccountVariables {
 }
 
 export interface SignUpAccountMutationResponse {
-	signUpAccount: AuthenticatedUser | null;
+	signUpAccount: AuthenticatedUser;
 }
 
 export function useSignUp() {
-	const [signUpAccount] = useMutation<SignUpAccountMutationResponse, SignUpAccountVariables>(
+	const mutation = useGraphqlMutation<SignUpAccountMutationResponse, SignUpAccountVariables>(
 		SIGN_UP_ACCOUNT_MUTATION
 	);
 
 	return async function signUp({ confirmPassword, ...credentials }: UserSignUpCredentialsForm) {
-		try {
-			const response = await signUpAccount({ variables: { credentials } });
-			if (response.errors) throw response.errors;
-			return { data: response.data.signUpAccount };
-		} catch (error) {
-			return { error: error.message };
-		}
+		return mutation({ credentials });
 	};
 }
+
+type Ig = SignUpAccountMutationResponse[keyof SignUpAccountMutationResponse];

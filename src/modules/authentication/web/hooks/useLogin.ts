@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useGraphqlMutation } from 'src/base/web/hooks/useGraphqlMutation';
 import type {
 	AuthenticatedUser,
 	UserLoginCredentials,
@@ -10,26 +10,16 @@ export interface VerifyCredentialsVariables {
 }
 
 export interface VerifyCredentialsMutationResponse {
-	verifyCredentials: AuthenticatedUser | null;
+	verifyCredentials: AuthenticatedUser;
 }
 
 export function useLogin() {
-	const [verifyCredentials] = useMutation<
+	const mutation = useGraphqlMutation<
 		VerifyCredentialsMutationResponse,
 		VerifyCredentialsVariables
 	>(SIGN_IN_ACCOUNT_MUTATION);
 
-	async function login(credentials: UserLoginCredentials) {
-		try {
-			const { data, errors } = await verifyCredentials({
-				variables: { credentials },
-			});
-			if (errors) throw errors;
-			return { data: data.verifyCredentials };
-		} catch (error) {
-			return { error: error.message };
-		}
-	}
-
-	return login;
+	return function login(credentials: UserLoginCredentials) {
+		return mutation({ credentials });
+	};
 }
