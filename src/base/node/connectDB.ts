@@ -9,11 +9,11 @@ if (!cached) {
 const environment = {
 	development: {
 		database: 'blogger',
-		url: process.env.MONG_URL,
+		url: process.env.MONGO_URL,
 	},
 	test: {
 		database: 'test_blogger',
-		url: process.env.MONG_URL,
+		url: process.env.MONGO_URL,
 	},
 	production: {
 		database: 'blogger',
