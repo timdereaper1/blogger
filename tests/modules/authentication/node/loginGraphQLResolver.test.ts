@@ -15,7 +15,7 @@ jest.mock('src/modules/authentication/node/handlers/verifyLoginCredentials');
 jest.mock('src/modules/authentication/node/handlers/signUpUserAccount');
 
 const context: GraphQLContext = {
-	sources: {
+	dataSources: {
 		users: {
 			findByEmail: jest.fn(),
 			insert: jest.fn(),
@@ -30,7 +30,7 @@ describe('verifyCredentials', () => {
 			password: faker.internet.password(),
 		};
 		await verifyLoginCredentialsMutation(undefined, { credentials }, context);
-		expect(verifyLoginCredentials).toHaveBeenCalledWith(context.sources.users, credentials);
+		expect(verifyLoginCredentials).toHaveBeenCalledWith(context.dataSources.users, credentials);
 	});
 });
 
@@ -40,8 +40,9 @@ describe('signUpAccountMutation', () => {
 			email: faker.internet.email(),
 			password: faker.internet.password(),
 			name: faker.name.findName(),
+			privileges: ['user'],
 		};
 		await signUpAccountMutation(undefined, { credentials }, context);
-		expect(signUpUserAccount).toHaveBeenCalledWith(context.sources.users, credentials);
+		expect(signUpUserAccount).toHaveBeenCalledWith(context.dataSources.users, credentials);
 	});
 });

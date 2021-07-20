@@ -11,7 +11,7 @@ export function verifyLoginCredentialsMutation(
 	args: { credentials: UserLoginCredentials },
 	context: GraphQLContext
 ) {
-	return verifyLoginCredentials(context.sources.users, args.credentials);
+	return verifyLoginCredentials(context.dataSources.users, args.credentials);
 }
 
 export function signUpAccountMutation(
@@ -19,5 +19,5 @@ export function signUpAccountMutation(
 	args: { credentials: UserSignUpCredentials },
 	context: GraphQLContext
 ) {
-	return signUpUserAccount(context.sources.users, args.credentials);
+	return signUpUserAccount(context.dataSources.users, args.credentials);
 }

@@ -18,6 +18,7 @@ export const typeDefs = gql`
 		password: String!
 		email: String!
 		name: String!
+		privileges: [String!]!
 	}
 
 	type Query {

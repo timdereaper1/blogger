@@ -1,20 +1,10 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import type {
 	AuthenticatedUser,
 	UserSignUpCredentials,
 } from 'src/modules/authentication/common/types';
-import { AUTHENTICATED_USER_FRAGMENT } from 'src/modules/authentication/web/fragments';
+import { SIGN_UP_ACCOUNT_MUTATION } from 'src/modules/authentication/web/schemas';
 import { UserSignUpCredentialsForm } from 'src/modules/authentication/web/types';
-
-export const SIGN_UP_ACCOUNT_MUTATION = gql`
-	mutation signUpAccount($credentials: UserSignUpCredentials!) {
-		signUpAccount(credentials: $credentials) {
-			...AuthenticatedUser
-		}
-	}
-
-	${AUTHENTICATED_USER_FRAGMENT}
-`;
 
 export interface SignUpAccountVariables {
 	credentials: UserSignUpCredentials;

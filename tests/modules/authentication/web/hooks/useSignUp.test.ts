@@ -10,9 +10,9 @@ import type {
 } from 'src/modules/authentication/common/types';
 import {
 	SignUpAccountMutationResponse,
-	SIGN_UP_ACCOUNT_MUTATION,
 	useSignUp,
 } from 'src/modules/authentication/web/hooks/useSignUp';
+import { SIGN_UP_ACCOUNT_MUTATION } from 'src/modules/authentication/web/schemas';
 import { renderMutationHook } from 'tests/reactTestUtils';
 
 describe('useSignUp', () => {
