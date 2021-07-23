@@ -19,3 +19,7 @@ export interface UserSignUpCredentials {
 	password: string;
 	privileges: ['user'];
 }
+
+export interface UserPasswordResetCredentials {
+	email: string;
+}

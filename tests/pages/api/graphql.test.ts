@@ -37,7 +37,7 @@ describe('graphql', () => {
 		sources.users.findByEmail.mockResolvedValueOnce(user);
 		const response = await server.executeOperation({
 			query: SIGN_IN_ACCOUNT_MUTATION,
-			variables: { credentials: { email, password } },
+			variables: { data: { email, password } },
 		});
 		expect(response.data).toBeDefined();
 		expect(response.data.verifyCredentials).toBeDefined();
@@ -65,7 +65,7 @@ describe('graphql', () => {
 		sources.users.insert.mockResolvedValueOnce(user);
 		const response = await server.executeOperation({
 			query: SIGN_UP_ACCOUNT_MUTATION,
-			variables: { credentials: { email, name, password, privileges: ['user'] } },
+			variables: { data: { email, name, password, privileges: ['user'] } },
 		});
 		expect(response.data).toBeDefined();
 		expect(response.data.signUpAccount).toBeDefined();

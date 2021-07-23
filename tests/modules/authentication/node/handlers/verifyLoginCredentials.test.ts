@@ -2,9 +2,9 @@ import * as argon from 'argon2';
 import faker from 'faker';
 import { BadRequestError } from 'src/base/common/errors';
 import { DBUser } from 'src/base/node/repositories/types';
-import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { verifyLoginCredentials } from 'src/modules/authentication/node/handlers/verifyLoginCredentials';
+import { MockUsersRepository } from 'tests/base/node/repositories/types';
 
 jest.mock('src/base/node/tokens');
 jest.mock('src/base/node/logging');
@@ -14,7 +14,7 @@ const mockedCreateToken = createAuthenticationToken as jest.MockedFunction<Creat
 
 describe('verifyLoginCredentials', () => {
 	let dbUser: DBUser;
-	let userRepository: Record<keyof UsersRepositoryInterface, jest.Mock<any, any>>;
+	let userRepository: MockUsersRepository;
 	const credentials = {
 		password: faker.internet.password(),
 		email: faker.internet.email(),

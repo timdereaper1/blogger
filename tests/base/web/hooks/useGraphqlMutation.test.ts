@@ -20,7 +20,7 @@ describe('useGraphqlMutation', () => {
 				{
 					request: {
 						query: SIGN_IN_ACCOUNT_MUTATION,
-						variables: { credentials },
+						variables: { data: credentials },
 					},
 					result: {
 						data: {
@@ -37,7 +37,7 @@ describe('useGraphqlMutation', () => {
 			]
 		);
 
-		await act(() => result.current.handleChange({ credentials }));
+		await act(() => result.current.handleChange(credentials));
 		expect(result.current.response.data).toBeDefined();
 		expect(result.current.response.error).not.toBeDefined();
 	});
@@ -49,7 +49,7 @@ describe('useGraphqlMutation', () => {
 				{
 					request: {
 						query: SIGN_IN_ACCOUNT_MUTATION,
-						variables: { credentials },
+						variables: { data: credentials },
 					},
 					result: {
 						errors: [new GraphQLError('Request denied')],
@@ -58,7 +58,7 @@ describe('useGraphqlMutation', () => {
 			]
 		);
 
-		await act(() => result.current.handleChange({ credentials }));
+		await act(() => result.current.handleChange(credentials));
 		expect(result.current.response.error).toBeDefined();
 		expect(result.current.response.data).not.toBeDefined();
 	});

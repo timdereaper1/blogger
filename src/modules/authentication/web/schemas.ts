@@ -11,8 +11,8 @@ export const AUTHENTICATED_USER_FRAGMENT = gql`
 `;
 
 export const SIGN_UP_ACCOUNT_MUTATION = gql`
-	mutation signUpAccount($credentials: UserSignUpCredentials!) {
-		signUpAccount(credentials: $credentials) {
+	mutation signUpAccount($data: UserSignUpCredentials!) {
+		signUpAccount(data: $data) {
 			...AuthenticatedUser
 		}
 	}
@@ -21,8 +21,8 @@ export const SIGN_UP_ACCOUNT_MUTATION = gql`
 `;
 
 export const SIGN_IN_ACCOUNT_MUTATION = gql`
-	mutation verifyCredentials($credentials: UserLoginCredentials!) {
-		verifyCredentials(credentials: $credentials) {
+	mutation verifyCredentials($data: UserLoginCredentials!) {
+		verifyCredentials(data: $data) {
 			...AuthenticatedUser
 		}
 	}

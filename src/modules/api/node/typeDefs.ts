@@ -26,7 +26,7 @@ export const typeDefs = gql`
 	}
 
 	type Mutation {
-		verifyCredentials(credentials: UserLoginCredentials!): User
-		signUpAccount(credentials: UserSignUpCredentials!): User
+		verifyCredentials(data: UserLoginCredentials!): User
+		signUpAccount(data: UserSignUpCredentials!): User
 	}
 `;

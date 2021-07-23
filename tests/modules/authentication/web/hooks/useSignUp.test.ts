@@ -34,7 +34,7 @@ describe('useSignUp', () => {
 	it('should return data when account is created successfully', async () => {
 		const { result } = renderMutationHook<SignUpAccountMutationResponse>(useSignUp, [
 			{
-				request: { query: SIGN_UP_ACCOUNT_MUTATION, variables: { credentials } },
+				request: { query: SIGN_UP_ACCOUNT_MUTATION, variables: { data: credentials } },
 				result: { data: { signUpAccount } },
 			},
 		]);
@@ -52,7 +52,7 @@ describe('useSignUp', () => {
 	it('should return the error for unsuccessful request', async () => {
 		const { result } = renderMutationHook<SignUpAccountMutationResponse>(useSignUp, [
 			{
-				request: { query: SIGN_UP_ACCOUNT_MUTATION, variables: { credentials } },
+				request: { query: SIGN_UP_ACCOUNT_MUTATION, variables: { data: credentials } },
 				result: {
 					errors: [new GraphQLError('Email already exists')],
 				},

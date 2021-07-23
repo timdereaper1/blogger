@@ -29,7 +29,7 @@ describe('useLogin', () => {
 	it('should return the user details for successful login', async () => {
 		const { result } = renderMutationHook<VerifyCredentialsMutationResponse>(useLogin, [
 			{
-				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { credentials } },
+				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { data: credentials } },
 				result: { data: { verifyCredentials } },
 			},
 		]);
@@ -42,7 +42,7 @@ describe('useLogin', () => {
 	it('should return the error for unsuccessful login', async () => {
 		const { result } = renderMutationHook(useLogin, [
 			{
-				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { credentials } },
+				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { data: credentials } },
 				result: {
 					errors: [new GraphQLError('Invalid login credentials')],
 				},
@@ -57,7 +57,7 @@ describe('useLogin', () => {
 	it('should return the network error', async () => {
 		const { result } = renderMutationHook(useLogin, [
 			{
-				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { credentials } },
+				request: { query: SIGN_IN_ACCOUNT_MUTATION, variables: { data: credentials } },
 				error: new Error('Cannot connect to network'),
 			},
 		]);

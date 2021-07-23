@@ -29,7 +29,7 @@ describe('signup', () => {
 						request: {
 							query: SIGN_UP_ACCOUNT_MUTATION,
 							variables: {
-								credentials: {
+								data: {
 									name: 'John Doe',
 									email: 'john.doe@gmail.com',
 									password: '1234567',
@@ -82,7 +82,7 @@ describe('signup', () => {
 						request: {
 							query: SIGN_UP_ACCOUNT_MUTATION,
 							variables: {
-								credentials: {
+								data: {
 									name: 'John Doe',
 									email: 'john.doe@gmail.com',
 									password: '1234567',
