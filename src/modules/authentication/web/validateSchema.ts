@@ -37,3 +37,11 @@ export const signUpValidateSchema = yup.object().shape({
 		.required('confirm password is required')
 		.typeError('must be a valid password'),
 });
+
+export const passwordResetValidateSchema = yup.object().shape({
+	email: yup
+		.string()
+		.required('email is required')
+		.email('must be a valid email')
+		.typeError('must be a valid email'),
+});

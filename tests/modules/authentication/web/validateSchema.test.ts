@@ -1,5 +1,6 @@
 import {
 	loginValidateSchema,
+	passwordResetValidateSchema,
 	signUpValidateSchema,
 } from 'src/modules/authentication/web/validateSchema';
 
@@ -107,5 +108,11 @@ describe('signUpValidateSchema', () => {
 					done();
 				});
 		});
+	});
+});
+
+describe('passwordResetValidateSchema', () => {
+	describe('email', () => {
+		testEmailSchema(passwordResetValidateSchema);
 	});
 });

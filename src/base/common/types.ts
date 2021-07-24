@@ -6,3 +6,8 @@ export interface ApiRequest<T> {
 }
 
 export type ApiRequestPromise<T> = Promise<ApiRequest<T>>;
+
+export interface SuccessMutationResponse {
+	message: string;
+	success: boolean;
+}
