@@ -9,7 +9,7 @@ export function processErrorToErrorLogs(error: any) {
 		file,
 		`=============================================
         error: ${error.name}
-        date: ${new Date().toDateString()}
+        date: ${new Date().toISOString()}
         message: ${error.message}
         stack: ${error.stack}\n`
 	);

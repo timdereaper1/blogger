@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import { processErrorToErrorLogs } from 'src/base/node/logging';
+import { getOAuth2Client } from './oAuth2Client';
 
 export async function sendEmail(to: string, subject: string, message: string) {
 	try {
-		const transporter = getEmailTransporter();
+		const transporter = await getEmailTransporter();
 		const options = getTransporterEmailOptions(to, subject, message);
 		const { response } = await transporter.sendMail(options);
 		return response;
@@ -12,7 +13,8 @@ export async function sendEmail(to: string, subject: string, message: string) {
 	}
 }
 
-export function getEmailTransporter() {
+export async function getEmailTransporter() {
+	const accessToken = await getOAuth2Client().getAccessToken();
 	const auth: any = {
 		type: 'OAuth2',
 		user: process.env.MAIL_USER,
@@ -20,6 +22,7 @@ export function getEmailTransporter() {
 		clientId: process.env.CLIENT_ID,
 		clientSecret: process.env.CLIENT_SECRET,
 		refreshToken: process.env.REFRESH_TOKEN,
+		accessToken,
 	};
 	return nodemailer.createTransport({ service: 'gmail', auth });
 }

@@ -6,19 +6,26 @@ import {
 	getTransporterEmailOptions,
 	sendEmail,
 } from 'src/base/node/services/mailing';
+import { getOAuth2Client } from 'src/base/node/services/oAuth2Client';
 
 dotenv.config();
 
 jest.mock('nodemailer');
+jest.mock('src/base/node/services/oAuth2Client');
+
 const mockedMailer = nodemailer as jest.Mocked<typeof nodemailer>;
+const mockedClient = getOAuth2Client as jest.MockedFunction<typeof getOAuth2Client>;
+
+const getAccessToken = jest.fn().mockResolvedValue('1234567890');
+mockedClient.mockReturnValue({ getAccessToken } as any);
 
 const to = faker.internet.email();
 const subject = faker.random.words();
 const message = faker.lorem.paragraph();
 
 describe('getEmailTransporter', () => {
-	it('should use the gmail service for emailing', () => {
-		getEmailTransporter();
+	it('should use the gmail service for emailing', async () => {
+		await getEmailTransporter();
 		expect(mockedMailer.createTransport).toHaveBeenCalledTimes(1);
 		expect(mockedMailer.createTransport).toHaveBeenCalledWith({
 			service: 'gmail',
@@ -29,6 +36,7 @@ describe('getEmailTransporter', () => {
 				clientId: process.env.CLIENT_ID,
 				clientSecret: process.env.CLIENT_SECRET,
 				refreshToken: process.env.REFRESH_TOKEN,
+				accessToken: '1234567890',
 			},
 		});
 	});
