@@ -1,10 +1,15 @@
 import nodemailer from 'nodemailer';
+import { processErrorToErrorLogs } from 'src/base/node/logging';
 
 export async function sendEmail(to: string, subject: string, message: string) {
-	const transporter = getEmailTransporter();
-	const options = getTransporterEmailOptions(to, subject, message);
-	const { response } = await transporter.sendMail(options);
-	return response;
+	try {
+		const transporter = getEmailTransporter();
+		const options = getTransporterEmailOptions(to, subject, message);
+		const { response } = await transporter.sendMail(options);
+		return response;
+	} catch (error) {
+		processErrorToErrorLogs(error);
+	}
 }
 
 export function getEmailTransporter() {

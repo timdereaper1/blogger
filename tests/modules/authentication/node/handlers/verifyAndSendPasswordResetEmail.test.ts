@@ -5,11 +5,17 @@ import { sendEmail } from 'src/base/node/services/mailing';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { UserPasswordResetCredentials } from 'src/modules/authentication/common/types';
 import { verifyAndSendPasswordResetEmail } from 'src/modules/authentication/node/handlers/verifyAndSendPasswordResetEmail';
+import { getPasswordResetEmail } from 'src/modules/authentication/node/templates/passwordResetEmail';
 import { MockUsersRepository } from 'tests/base/node/repositories/types';
 
 jest.mock('src/base/node/services/mailing');
 jest.mock('src/base/node/tokens');
+jest.mock('src/modules/authentication/node/templates/passwordResetEmail');
+jest.mock('src/base/node/logging');
 
+const mockedPasswordResetEmail = getPasswordResetEmail as jest.MockedFunction<
+	typeof getPasswordResetEmail
+>;
 const mockedSendEmail = sendEmail as jest.MockedFunction<typeof sendEmail>;
 const mockedCreateToken = createAuthenticationToken as jest.MockedFunction<
 	typeof createAuthenticationToken
@@ -41,12 +47,13 @@ describe('verifyAndSendPasswordResetEmail', () => {
 
 	it('should send password reset email to client email address when found', async () => {
 		usersRepository.findByEmail.mockResolvedValueOnce(user);
+		mockedPasswordResetEmail.mockReturnValueOnce('Message to reset password');
 		await verifyAndSendPasswordResetEmail(usersRepository, credentials);
 		expect(mockedSendEmail).toHaveBeenCalledTimes(1);
 		expect(mockedSendEmail).toHaveBeenCalledWith(
 			credentials.email,
 			'Blogger: Password Reset',
-			''
+			'Message to reset password'
 		);
 	});
 
@@ -64,5 +71,15 @@ describe('verifyAndSendPasswordResetEmail', () => {
 		const promise = verifyAndSendPasswordResetEmail(usersRepository, credentials);
 		expect(promise).rejects.toThrow('Invalid email account');
 		expect(mockedSendEmail).not.toHaveBeenCalled();
+	});
+
+	it('should return a success and message when email is sent', async () => {
+		usersRepository.findByEmail.mockResolvedValueOnce(user);
+		mockedPasswordResetEmail.mockReturnValueOnce('Message to reset password');
+		const result = await verifyAndSendPasswordResetEmail(usersRepository, credentials);
+		expect(result).toEqual({
+			message: `Reset password email has been sent to ${user.name}`,
+			success: true,
+		});
 	});
 });

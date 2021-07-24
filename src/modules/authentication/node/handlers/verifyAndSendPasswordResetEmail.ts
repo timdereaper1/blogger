@@ -4,6 +4,7 @@ import { UsersRepositoryInterface } from 'src/base/node/repositories/usersReposi
 import { sendEmail } from 'src/base/node/services/mailing';
 import { createAuthenticationToken } from 'src/base/node/tokens';
 import { UserPasswordResetCredentials } from 'src/modules/authentication/common/types';
+import { getPasswordResetEmail } from 'src/modules/authentication/node/templates/passwordResetEmail';
 
 export async function verifyAndSendPasswordResetEmail(
 	usersRepository: UsersRepositoryInterface,
@@ -12,8 +13,12 @@ export async function verifyAndSendPasswordResetEmail(
 	try {
 		const user = await usersRepository.findByEmail(credentials.email);
 		const token = createAuthenticationToken(user._id);
-		// TODO: create password reset template
-		sendEmail(credentials.email, 'Blogger: Password Reset', '');
+		const message = getPasswordResetEmail(user.name, token);
+		sendEmail(user.email, 'Blogger: Password Reset', message);
+		return {
+			message: `Reset password email has been sent to ${user.name}`,
+			success: true,
+		};
 	} catch (error) {
 		processRequestError(error, new AuthenticationError('Invalid email account'));
 	}
