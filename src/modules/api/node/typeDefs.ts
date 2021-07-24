@@ -9,6 +9,11 @@ export const typeDefs = gql`
 		privileges: [String!]!
 	}
 
+	type Success {
+		message: String!
+		success: Boolean!
+	}
+
 	input UserLoginCredentials {
 		email: String!
 		password: String!
@@ -21,6 +26,10 @@ export const typeDefs = gql`
 		privileges: [String!]!
 	}
 
+	input UserPasswordResetCredentials {
+		email: String!
+	}
+
 	type Query {
 		hello: String
 	}
@@ -28,5 +37,6 @@ export const typeDefs = gql`
 	type Mutation {
 		verifyCredentials(data: UserLoginCredentials!): User
 		signUpAccount(data: UserSignUpCredentials!): User
+		verifyAndSendPasswordResetEmail(data: UserPasswordResetCredentials!): Success
 	}
 `;

@@ -2,17 +2,21 @@ import faker from 'faker';
 import { GraphQLContext } from 'src/base/node/graphqlContext';
 import {
 	UserLoginCredentials,
+	UserPasswordResetCredentials,
 	UserSignUpCredentials,
 } from 'src/modules/authentication/common/types';
-import { signUpUserAccount } from 'src/modules/authentication/node/handlers/signUpUserAccount';
-import { verifyLoginCredentials } from 'src/modules/authentication/node/handlers/verifyLoginCredentials';
 import {
 	signUpAccountMutation,
+	verifyAndSendPasswordResetEmailMutation,
 	verifyLoginCredentialsMutation,
-} from 'src/modules/authentication/node/loginGraphQLResolver';
+} from 'src/modules/authentication/node/authenticationResolvers';
+import { signUpUserAccount } from 'src/modules/authentication/node/handlers/signUpUserAccount';
+import { verifyAndSendPasswordResetEmail } from 'src/modules/authentication/node/handlers/verifyAndSendPasswordResetEmail';
+import { verifyLoginCredentials } from 'src/modules/authentication/node/handlers/verifyLoginCredentials';
 
 jest.mock('src/modules/authentication/node/handlers/verifyLoginCredentials');
 jest.mock('src/modules/authentication/node/handlers/signUpUserAccount');
+jest.mock('src/modules/authentication/node/handlers/verifyAndSendPasswordResetEmail');
 
 const context: GraphQLContext = {
 	dataSources: {
@@ -44,5 +48,16 @@ describe('signUpAccountMutation', () => {
 		};
 		await signUpAccountMutation(undefined, { data: credentials }, context);
 		expect(signUpUserAccount).toHaveBeenCalledWith(context.dataSources.users, credentials);
+	});
+});
+
+describe('verifyAndSendPasswordResetEmailMutation', () => {
+	it('should call verifyAndSendPasswordResetEmail handler with user credentials', async () => {
+		const credentials: UserPasswordResetCredentials = { email: faker.internet.email() };
+		await verifyAndSendPasswordResetEmailMutation(undefined, { data: credentials }, context);
+		expect(verifyAndSendPasswordResetEmail).toHaveBeenCalledWith(
+			context.dataSources.users,
+			credentials
+		);
 	});
 });

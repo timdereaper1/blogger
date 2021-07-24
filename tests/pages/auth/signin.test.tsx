@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import { GraphQLError } from 'graphql';
 import { useRouter } from 'next/router';
 import { SIGN_IN_ACCOUNT_MUTATION } from 'src/modules/authentication/web/schemas';
-import Login from 'src/pages/signin';
+import Login from 'src/pages/auth/signin';
 
 jest.mock('next/router');
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;

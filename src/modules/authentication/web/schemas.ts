@@ -29,3 +29,12 @@ export const SIGN_IN_ACCOUNT_MUTATION = gql`
 
 	${AUTHENTICATED_USER_FRAGMENT}
 `;
+
+export const VERIFY_AND_SEND_PASSWORD_RESET_EMAIL_MUTATION = gql`
+	mutation verifyAndSendPasswordResetEmail($data: UserPasswordResetCredentials!) {
+		verifyAndSendPasswordResetEmail(data: $data) {
+			message
+			success
+		}
+	}
+`;

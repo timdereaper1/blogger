@@ -1,7 +1,8 @@
 import {
 	signUpAccountMutation,
+	verifyAndSendPasswordResetEmailMutation,
 	verifyLoginCredentialsMutation,
-} from 'src/modules/authentication/node/loginGraphQLResolver';
+} from 'src/modules/authentication/node/authenticationResolvers';
 
 export const resolvers = {
 	Query: {
@@ -12,5 +13,6 @@ export const resolvers = {
 	Mutation: {
 		verifyCredentials: verifyLoginCredentialsMutation,
 		signUpAccount: signUpAccountMutation,
+		verifyAndSendPasswordResetEmail: verifyAndSendPasswordResetEmailMutation,
 	},
 };

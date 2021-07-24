@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`graphql send password reset email should send an email to user to reset their password 1`] = `
+Object {
+  "data": Object {
+    "verifyAndSendPasswordResetEmail": Object {
+      "message": "Reset password email has been sent to John Doe",
+      "success": true,
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`graphql sign in should sign in user with correct credentials 1`] = `
+Object {
+  "data": Object {
+    "verifyCredentials": Object {
+      "email": "john.doe@gmail.com",
+      "id": "9384dEe38rEgf93f02nGf93",
+      "name": "John Doe",
+      "privileges": Array [
+        "user",
+      ],
+      "token": "eyJhbGciOiJIUzI1NiJ9.OTM4NGRFZTM4ckVnZjkzZjAybkdmOTM.P2UQL5NOeeRzWqFUk8SggYtAvMi73wmsh3DGUzJuAdg",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`graphql sign up should create a new account when user is signing up 1`] = `
+Object {
+  "data": Object {
+    "signUpAccount": Object {
+      "email": "john.doe@gmail.com",
+      "id": "9384dEe38rEgf93f02nGf93",
+      "name": "John Doe",
+      "privileges": Array [
+        "user",
+      ],
+      "token": "eyJhbGciOiJIUzI1NiJ9.OTM4NGRFZTM4ckVnZjkzZjAybkdmOTM.P2UQL5NOeeRzWqFUk8SggYtAvMi73wmsh3DGUzJuAdg",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
