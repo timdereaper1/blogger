@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'src/base/web/hooks/useForm';
+import Notification from 'src/base/web/ui/Notification';
 import { UserPasswordResetCredentials } from 'src/modules/authentication/common/types';
 import { useEmailPasswordReset } from 'src/modules/authentication/web/hooks/useEmailPasswordReset';
 import { passwordResetValidateSchema } from 'src/modules/authentication/web/validateSchema';
@@ -51,6 +52,7 @@ export default function ForgottenPassword() {
 				{!formik.isSubmitting ? null : <span role="progressbar"></span>}
 			</form>
 			{!showMessage ? null : <div data-testid="message-box">{showMessage}</div>}
+			<Notification />
 		</main>
 	);
 }
