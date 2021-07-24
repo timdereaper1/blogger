@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`graphql: sign in should sign in user with correct credentials 1`] = `
+Object {
+  "data": Object {
+    "verifyCredentials": Object {
+      "email": "john.doe@gmail.com",
+      "id": "313233343536373839303132",
+      "name": "John Doe",
+      "privileges": Array [
+        "user",
+      ],
+      "token": "eyJhbGciOiJIUzI1NiJ9.OTM4NGRFZTM4ckVnZjkzZjAybkdmOTM.P2UQL5NOeeRzWqFUk8SggYtAvMi73wmsh3DGUzJuAdg",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

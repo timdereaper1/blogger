@@ -1,4 +1,5 @@
 import {
+	resetUserPasswordMutation,
 	signUpAccountMutation,
 	verifyAndSendPasswordResetEmailMutation,
 	verifyLoginCredentialsMutation,
@@ -14,5 +15,6 @@ export const resolvers = {
 		verifyCredentials: verifyLoginCredentialsMutation,
 		signUpAccount: signUpAccountMutation,
 		verifyAndSendPasswordResetEmail: verifyAndSendPasswordResetEmailMutation,
+		resetUserPassword: resetUserPasswordMutation,
 	},
 };

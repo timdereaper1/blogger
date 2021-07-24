@@ -1,9 +1,11 @@
 import { GraphQLContext } from 'src/base/node/graphqlContext';
 import {
+	ResetPasswordCredentials,
 	UserLoginCredentials,
 	UserPasswordResetCredentials,
 	UserSignUpCredentials,
 } from 'src/modules/authentication/common/types';
+import { resetUserPassword } from './handlers/resetUserPassword';
 import { signUpUserAccount } from './handlers/signUpUserAccount';
 import { verifyAndSendPasswordResetEmail } from './handlers/verifyAndSendPasswordResetEmail';
 import { verifyLoginCredentials } from './handlers/verifyLoginCredentials';
@@ -30,4 +32,12 @@ export function verifyAndSendPasswordResetEmailMutation(
 	context: GraphQLContext
 ) {
 	return verifyAndSendPasswordResetEmail(context.dataSources.users, args.data);
+}
+
+export function resetUserPasswordMutation(
+	_parent: unknown,
+	args: { data: ResetPasswordCredentials },
+	context: GraphQLContext
+) {
+	return resetUserPassword(context.dataSources.users, args.data, context.user.id);
 }

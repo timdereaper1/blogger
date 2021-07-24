@@ -1,0 +1,5 @@
+export const authToken =
+	'eyJhbGciOiJIUzI1NiJ9.OTM4NGRFZTM4ckVnZjkzZjAybkdmOTM.P2UQL5NOeeRzWqFUk8SggYtAvMi73wmsh3DGUzJuAdg';
+
+export const expiredToken =
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InRlc3Qtc2lnbi10b2tlbiIsImlhdCI6MTYyNzE1NTc4MCwiZXhwIjoxNjI3MTU1ODQwfQ.rZnNdCtmlu-xKWRjMi5IwcqKa2GkpTMe2bbzk0vHIAI';

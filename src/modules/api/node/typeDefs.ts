@@ -30,6 +30,10 @@ export const typeDefs = gql`
 		email: String!
 	}
 
+	input ResetPasswordCredentials {
+		password: String!
+	}
+
 	type Query {
 		hello: String
 	}
@@ -38,5 +42,6 @@ export const typeDefs = gql`
 		verifyCredentials(data: UserLoginCredentials!): User
 		signUpAccount(data: UserSignUpCredentials!): User
 		verifyAndSendPasswordResetEmail(data: UserPasswordResetCredentials!): Success
+		resetUserPassword(data: ResetPasswordCredentials!): Success
 	}
 `;

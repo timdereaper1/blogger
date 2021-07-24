@@ -38,3 +38,12 @@ export const VERIFY_AND_SEND_PASSWORD_RESET_EMAIL_MUTATION = gql`
 		}
 	}
 `;
+
+export const RESET_USER_PASSWORD_MUTATION = gql`
+	mutation resetUserPassword($data: ResetPasswordCredentials!) {
+		resetUserPassword(data: $data) {
+			message
+			success
+		}
+	}
+`;
