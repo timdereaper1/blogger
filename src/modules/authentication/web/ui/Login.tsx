@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'src/base/web/hooks/useForm';
 import Notification from 'src/base/web/ui/Notification';
@@ -43,10 +44,10 @@ export default function Login() {
 						required
 						onBlur={form.handleBlur}
 					/>
+					{form.getFieldError('email') ? (
+						<small data-testid="error-helper">{form.getFieldError('email')}</small>
+					) : null}
 				</label>
-				{form.getFieldError('email') ? (
-					<small data-testid="error-helper">{form.getFieldError('email')}</small>
-				) : null}
 				<label htmlFor="password">
 					Password
 					<input
@@ -58,15 +59,28 @@ export default function Login() {
 						value={form.values.password}
 						onChange={form.handleChange}
 					/>
+					{form.getFieldError('password') ? (
+						<small data-testid="error-helper">{form.getFieldError('password')}</small>
+					) : null}
 				</label>
-				{form.getFieldError('password') ? (
-					<small data-testid="error-helper">{form.getFieldError('password')}</small>
-				) : null}
+				<div>
+					<Link href="/auth/forgotten-password">
+						<a>Forgotten Password</a>
+					</Link>
+				</div>
 				<button disabled={!(form.dirty && form.isValid)} type="submit">
 					Login
 				</button>
-				{form.isSubmitting ? <i data-testid="loading">loading</i> : null}
+				{form.isSubmitting ? <span role="progressbar">loading</span> : null}
 			</form>
+			<p>
+				<small>
+					Don't have an account?
+					<Link href="/auth/signup">
+						<a>Sign Up</a>
+					</Link>
+				</small>
+			</p>
 			<Notification />
 		</main>
 	);

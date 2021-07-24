@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'src/base/web/hooks/useForm';
 import Notification from 'src/base/web/ui/Notification';
@@ -44,10 +45,10 @@ export default function SignUp() {
 						onBlur={form.handleBlur}
 						value={form.values.name}
 					/>
+					{form.getFieldError('name') ? (
+						<small data-testid="error-helper">{form.getFieldError('name')}</small>
+					) : null}
 				</label>
-				{form.getFieldError('name') ? (
-					<small data-testid="error-helper">{form.getFieldError('name')}</small>
-				) : null}
 				<label htmlFor="email">
 					Email
 					<input
@@ -59,10 +60,10 @@ export default function SignUp() {
 						value={form.values.email}
 						id="email"
 					/>
+					{form.getFieldError('email') ? (
+						<small data-testid="error-helper">{form.getFieldError('email')}</small>
+					) : null}
 				</label>
-				{form.getFieldError('email') ? (
-					<small data-testid="error-helper">{form.getFieldError('email')}</small>
-				) : null}
 				<label htmlFor="password">
 					Password
 					<input
@@ -74,10 +75,10 @@ export default function SignUp() {
 						value={form.values.password}
 						id="password"
 					/>
+					{form.getFieldError('password') ? (
+						<small data-testid="error-helper">{form.getFieldError('password')}</small>
+					) : null}
 				</label>
-				{form.getFieldError('password') ? (
-					<small data-testid="error-helper">{form.getFieldError('password')}</small>
-				) : null}
 				<label htmlFor="confirmPassword">
 					Confirm Password
 					<input
@@ -89,16 +90,23 @@ export default function SignUp() {
 						value={form.values.confirmPassword}
 						id="confirmPassword"
 					/>
+					{form.getFieldError('confirmPassword') ? (
+						<small data-testid="error-helper">
+							{form.getFieldError('confirmPassword')}
+						</small>
+					) : null}
 				</label>
-				{form.getFieldError('confirmPassword') ? (
-					<small data-testid="error-helper">
-						{form.getFieldError('confirmPassword')}
-					</small>
-				) : null}
 				<button type="submit" disabled={!(form.dirty && form.isValid)}>
 					Sign Up
 				</button>
+				{!form.isSubmitting ? null : <span role="progressbar"></span>}
 			</form>
+			<p>
+				Already have an account?
+				<Link href="/auth/signin">
+					<a>Sign In</a>
+				</Link>
+			</p>
 			<Notification />
 		</main>
 	);

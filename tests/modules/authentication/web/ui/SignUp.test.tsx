@@ -192,4 +192,13 @@ describe('SignUp', () => {
 		userEvent.click(screen.getByRole('button', { name: 'Sign Up' }));
 		expect(signUpAccount).not.toBeCalled();
 	});
+
+	it('should show link to sign in page', () => {
+		render(<SignUp />);
+		expect(screen.getByRole('link', { name: 'Sign In' })).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: 'Sign In' })).toHaveAttribute(
+			'href',
+			'/auth/signin'
+		);
+	});
 });

@@ -96,7 +96,7 @@ describe('Login', () => {
 		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
 		await waitFor(() => {
-			expect(screen.getByTestId(/loading/)).toBeInTheDocument();
+			expect(screen.getByRole('progressbar')).toBeInTheDocument();
 		});
 	});
 
@@ -106,10 +106,10 @@ describe('Login', () => {
 		userEvent.type(screen.getByLabelText(/Password/), '123456');
 		await screen.findByDisplayValue('123456');
 		userEvent.click(screen.getByRole('button', { name: 'Login' }));
+		await screen.findByRole('progressbar');
 		await waitFor(() => {
 			expect(screen.getByLabelText(/Email/)).toHaveDisplayValue('');
 			expect(screen.getByLabelText(/Password/)).toHaveDisplayValue('');
-			expect(screen.queryByTestId(/loading/)).not.toBeInTheDocument();
 		});
 	});
 
@@ -153,5 +153,23 @@ describe('Login', () => {
 		await waitFor(() => {
 			expect(push).toHaveBeenCalledWith('/dashboard');
 		});
+	});
+
+	it('should show forgotten password link', () => {
+		render(<Login />);
+		expect(screen.getByRole('link', { name: 'Forgotten Password' })).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: 'Forgotten Password' })).toHaveAttribute(
+			'href',
+			'/auth/forgotten-password'
+		);
+	});
+
+	it('should show link to sign up page', () => {
+		render(<Login />);
+		expect(screen.getByRole('link', { name: 'Sign Up' })).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveAttribute(
+			'href',
+			'/auth/signup'
+		);
 	});
 });
