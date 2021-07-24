@@ -32,6 +32,7 @@ describe('verifyLoginCredentials', () => {
 		userRepository = {
 			findByEmail: jest.fn().mockResolvedValue(dbUser),
 			insert: jest.fn().mockResolvedValue(dbUser),
+			update: jest.fn(),
 		};
 	});
 

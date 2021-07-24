@@ -29,6 +29,7 @@ describe('signUpUserAccount', () => {
 	const usersRepository: MockUsersRepository = {
 		findByEmail: jest.fn(),
 		insert: jest.fn().mockResolvedValue(dbUser),
+		update: jest.fn(),
 	};
 
 	beforeEach(async () => {

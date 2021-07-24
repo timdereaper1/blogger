@@ -25,6 +25,7 @@ describe('verifyAndSendPasswordResetEmail', () => {
 	const usersRepository: MockUsersRepository = {
 		findByEmail: jest.fn(),
 		insert: jest.fn(),
+		update: jest.fn(),
 	};
 
 	const credentials: UserPasswordResetCredentials = {

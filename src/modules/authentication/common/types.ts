@@ -23,3 +23,7 @@ export interface UserSignUpCredentials {
 export interface UserPasswordResetCredentials {
 	email: string;
 }
+
+export interface ResetPasswordCredentials {
+	password: string;
+}

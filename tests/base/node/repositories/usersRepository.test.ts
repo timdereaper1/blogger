@@ -30,6 +30,7 @@ describe('usersRepository', () => {
 			...dbUser,
 			insertedId: new ObjectId(),
 		}),
+		findOneAndUpdate: jest.fn().mockResolvedValue({ value: dbUser }),
 	};
 
 	const dbMock = {
@@ -71,6 +72,21 @@ describe('usersRepository', () => {
 			expect(repository.findByEmail(faker.internet.email())).rejects.toThrow(
 				'Email does not exists'
 			);
+		});
+	});
+
+	describe('update', () => {
+		it('should find and update user record', async () => {
+			const name = faker.name.findName();
+			mockModel.findOneAndUpdate.mockResolvedValueOnce({
+				value: { ...dbUser, name },
+			});
+			const user = await repository.update(faker.datatype.uuid(), { name });
+			expect(user.name).toBe(name);
+			expect(user.email).toBe(testUser.email);
+			expect(user.password).toBe(testUser.password);
+			expect(user.privileges).toEqual(testUser.privileges);
+			expect(user).toHaveProperty('_id');
 		});
 	});
 });
