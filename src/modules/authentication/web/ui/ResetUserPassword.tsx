@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'src/base/web/hooks/useForm';
+import { storeAuthenticationTokenInStorage } from 'src/base/web/storage';
 import Notification from 'src/base/web/ui/Notification';
 import { ResetPasswordCredentialsForm } from 'src/modules/authentication/web/types';
 import { useResetPassword } from '../hooks/useResetPassword';
@@ -18,6 +19,7 @@ export default function ResetUserPassword() {
 
 	async function onSubmit() {
 		formik.setSubmitting(true);
+		storeAuthenticationTokenInStorage(query.token as string);
 		const response = await resetPassword(formik.values);
 		formik.setSubmitting(false);
 		if (response.error) return;

@@ -4,7 +4,7 @@
 import { act } from '@testing-library/react-hooks';
 import faker from 'faker';
 import { GraphQLError } from 'graphql';
-import type { AuthenticatedUser } from 'src/modules/authentication/common/types';
+import type { AuthenticatedUser } from 'src/base/common/types';
 import {
 	useLogin,
 	VerifyCredentialsMutationResponse,

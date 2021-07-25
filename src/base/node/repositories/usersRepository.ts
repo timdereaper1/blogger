@@ -35,6 +35,7 @@ export function UsersRepository(db: Db) {
 	async function update(_id: string, data: Partial<UserSchema>): Promise<DBUser> {
 		const collection = db.collection<MongoUser>('users');
 		const user = await collection.findOneAndUpdate({ _id } as any, data);
+		if (!user.value) throw new BadRequestError('Record does not exist');
 		return {
 			...user.value,
 			_id: user.value._id.toHexString(),

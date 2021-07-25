@@ -5,12 +5,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
+import { storeAuthenticationTokenInStorage } from 'src/base/web/storage';
 import { useResetPassword } from 'src/modules/authentication/web/hooks/useResetPassword';
 import ResetUserPassword from 'src/modules/authentication/web/ui/ResetUserPassword';
 import { authToken } from 'tests/fixtures/token';
 
 jest.mock('src/modules/authentication/web/hooks/useResetPassword');
 jest.mock('next/router');
+jest.mock('src/base/web/storage');
 
 const mockedUseResetPassword = useResetPassword as jest.MockedFunction<typeof useResetPassword>;
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
@@ -116,6 +118,7 @@ describe('ResetUserPassword', () => {
 
 			userEvent.click(screen.getByRole('button', { name: 'Reset Password' }));
 			await screen.findByRole('progressbar');
+			expect(storeAuthenticationTokenInStorage).toHaveBeenCalledWith(authToken);
 			expect(mutation).toHaveBeenCalledWith({
 				password: '1234567',
 				confirmPassword: '1234567',

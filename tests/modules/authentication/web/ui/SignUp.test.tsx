@@ -5,17 +5,20 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import faker from 'faker';
 import { useRouter } from 'next/router';
-import type { AuthenticatedUser } from 'src/modules/authentication/common/types';
+import type { AuthenticatedUser } from 'src/base/common/types';
+import { storeAuthenticatedUserInStorage } from 'src/base/web/storage';
 import { useSignUp } from 'src/modules/authentication/web/hooks/useSignUp';
-import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
 import SignUp from 'src/modules/authentication/web/ui/SignUp';
 
 jest.mock('next/router');
 jest.mock('src/modules/authentication/web/hooks/useSignUp');
-jest.mock('src/modules/authentication/web/storage');
+jest.mock('src/base/web/storage');
+
 const mockedUseSignUp = useSignUp as jest.MockedFunction<typeof useSignUp>;
 const mockedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
-const mockedStoreUser = storeLoggedInUser as jest.MockedFunction<typeof storeLoggedInUser>;
+const mockedStoreUser = storeAuthenticatedUserInStorage as jest.MockedFunction<
+	typeof storeAuthenticatedUserInStorage
+>;
 
 describe('SignUp', () => {
 	const responseData: AuthenticatedUser = {

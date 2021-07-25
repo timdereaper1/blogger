@@ -1,16 +1,6 @@
-import { Privileges } from 'src/base/common/types';
-
 export interface UserLoginCredentials {
 	email: string;
 	password: string;
-}
-
-export interface AuthenticatedUser {
-	email: string;
-	name: string;
-	token: string;
-	id: string;
-	privileges: Privileges[];
 }
 
 export interface UserSignUpCredentials {

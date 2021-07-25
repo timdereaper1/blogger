@@ -1,5 +1,5 @@
+import { AuthenticatedUser } from 'src/base/common/types';
 import { DBUser } from 'src/base/node/repositories/types';
-import { AuthenticatedUser } from 'src/modules/authentication/common/types';
 
 export function formatDBUserToAuthUserStructure(user: DBUser, token: string): AuthenticatedUser {
 	return {

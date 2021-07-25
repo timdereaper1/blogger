@@ -1,13 +1,11 @@
 import { AuthenticationError } from 'apollo-server-micro';
 import * as argon from 'argon2';
 import { BadRequestError } from 'src/base/common/errors';
+import { AuthenticatedUser } from 'src/base/common/types';
 import { processRequestError } from 'src/base/node/errorHandling';
 import type { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
 import { createAuthenticationToken } from 'src/base/node/tokens';
-import type {
-	AuthenticatedUser,
-	UserLoginCredentials,
-} from 'src/modules/authentication/common/types';
+import type { UserLoginCredentials } from 'src/modules/authentication/common/types';
 import { formatDBUserToAuthUserStructure } from 'src/modules/authentication/node/mappers';
 
 export async function verifyLoginCredentials(

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'src/base/web/hooks/useForm';
+import { storeAuthenticatedUserInStorage } from 'src/base/web/storage';
 import Notification from 'src/base/web/ui/Notification';
-import { UserLoginCredentials } from 'src/modules/authentication/common/types';
+import type { UserLoginCredentials } from 'src/modules/authentication/common/types';
 import { useLogin } from 'src/modules/authentication/web/hooks/useLogin';
-import { storeLoggedInUser } from 'src/modules/authentication/web/storage';
 import { loginValidateSchema } from 'src/modules/authentication/web/validateSchema';
 
 export default function Login() {
@@ -25,7 +25,7 @@ export default function Login() {
 		form.setSubmitting(false);
 		if (!data) return;
 		form.resetForm();
-		storeLoggedInUser(data);
+		storeAuthenticatedUserInStorage(data);
 		push('/dashboard');
 	}
 
