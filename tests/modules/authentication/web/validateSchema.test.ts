@@ -1,6 +1,7 @@
 import {
 	loginValidateSchema,
 	passwordResetValidateSchema,
+	resetUserPasswordValidateSchema,
 	signUpValidateSchema,
 } from 'src/modules/authentication/web/validateSchema';
 
@@ -114,5 +115,22 @@ describe('signUpValidateSchema', () => {
 describe('passwordResetValidateSchema', () => {
 	describe('email', () => {
 		testEmailSchema(passwordResetValidateSchema);
+	});
+});
+
+describe('resetUserPasswordValidateSchema', () => {
+	describe('password', () => {
+		testPasswordSchema(resetUserPasswordValidateSchema);
+	});
+
+	describe('confirm password', () => {
+		it('should match password', (done) => {
+			resetUserPasswordValidateSchema
+				.validateAt('confirmPassword', { confirmPassword: '1234567', password: '123456' })
+				.catch((err) => {
+					expect(err.message).toBe('does not match password');
+					done();
+				});
+		});
 	});
 });

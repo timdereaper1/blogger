@@ -45,3 +45,17 @@ export const passwordResetValidateSchema = yup.object().shape({
 		.email('must be a valid email')
 		.typeError('must be a valid email'),
 });
+
+export const resetUserPasswordValidateSchema = yup.object().shape({
+	password: yup
+		.string()
+		.required('password is required')
+		.min(6, 'password must not be less than 6 characters')
+		.max(16, 'password must not be more than 16 characters')
+		.typeError('must be a valid password'),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref('password'), null], 'does not match password')
+		.required('confirm password is required')
+		.typeError('must be a valid password'),
+});

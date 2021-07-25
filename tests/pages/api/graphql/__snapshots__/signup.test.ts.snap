@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`sign up should create a new account when user is signing up 1`] = `
+exports[`graphql: sign up should create a new account when user is signing up 1`] = `
 Object {
   "data": Object {
     "signUpAccount": Object {
