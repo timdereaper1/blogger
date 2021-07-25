@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useEmailPasswordReset } from 'src/modules/authentication/web/hooks/useEmailPasswordReset';
 import ForgottenPassword from 'src/modules/authentication/web/ui/ForgottenPassword';
@@ -17,6 +17,14 @@ describe('ForgottenPassword', () => {
 		.fn()
 		.mockResolvedValue({ data: { message: 'Email has been sent', success: true } });
 	mockedUseEmailPasswordReset.mockReturnValue(mutation);
+
+	beforeAll(() => {
+		jest.useFakeTimers();
+	});
+
+	afterAll(() => {
+		jest.useRealTimers();
+	});
 
 	it('should render correctly', () => {
 		render(<ForgottenPassword />);
@@ -76,6 +84,27 @@ describe('ForgottenPassword', () => {
 			'An email has been sent to john.doe@gmail.com to reset the password'
 		);
 		expect(screen.getByTestId('message-box')).toBeInTheDocument();
-		expect(screen.getByLabelText('Email')).toHaveValue('');
+		expect(screen.getByRole('button', { name: 'Resend' })).toBeInTheDocument();
+	});
+
+	it('should enable the resend button after every minute', async () => {
+		render(<ForgottenPassword />);
+		userEvent.type(screen.getByLabelText('Email'), 'john.doe@gmail.com');
+		await screen.findByDisplayValue('john.doe@gmail.com');
+
+		userEvent.click(screen.getByRole('button', { name: 'Send Email' }));
+
+		await screen.findByRole('button', { name: 'Resend' });
+		expect(screen.getByRole('button', { name: 'Resend' })).toBeDisabled();
+
+		act(() => jest.runAllTimers() as any);
+		expect(screen.getByRole('button', { name: 'Resend' })).not.toBeDisabled();
+
+		userEvent.click(screen.getByRole('button', { name: 'Resend' }));
+
+		await screen.findByText(
+			'An email has been sent to john.doe@gmail.com to reset the password'
+		);
+		expect(mutation).toHaveBeenCalledWith({ email: 'john.doe@gmail.com' });
 	});
 });

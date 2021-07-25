@@ -7,19 +7,27 @@ import { passwordResetValidateSchema } from 'src/modules/authentication/web/vali
 
 export default function ForgottenPassword() {
 	const sendEmail = useEmailPasswordReset();
-	const [showMessage, setMessage] = React.useState('');
+	const [message, setMessage] = React.useState('');
+	const [canResendEmail, setIsResendAvailable] = React.useState(false);
 	const formik = useForm<UserPasswordResetCredentials>({
 		initialValues: { email: '' },
 		onSubmit,
 		validationSchema: passwordResetValidateSchema,
 	});
 
+	React.useEffect(() => {
+		if (canResendEmail) return;
+		const DELAY_ONE_MINUTE = 1000 * 60;
+		const timerId = setTimeout(() => setIsResendAvailable(true), DELAY_ONE_MINUTE);
+		return () => clearTimeout(timerId);
+	}, [canResendEmail]);
+
 	async function onSubmit() {
 		formik.setSubmitting(true);
+		setIsResendAvailable(false);
 		const response = await sendEmail(formik.values);
 		formik.setSubmitting(false);
 		if (response.error) return;
-		formik.resetForm();
 		setMessage(`An email has been sent to ${formik.values.email} to reset the password`);
 	}
 
@@ -51,7 +59,14 @@ export default function ForgottenPassword() {
 				</button>
 				{!formik.isSubmitting ? null : <span role="progressbar"></span>}
 			</form>
-			{!showMessage ? null : <div data-testid="message-box">{showMessage}</div>}
+			{!message ? null : (
+				<section>
+					<div data-testid="message-box">{message}</div>
+					<button disabled={!canResendEmail} onClick={formik.submitForm} type="button">
+						Resend
+					</button>
+				</section>
+			)}
 			<Notification />
 		</main>
 	);
