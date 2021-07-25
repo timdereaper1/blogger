@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-micro';
 import * as argon from 'argon2';
 import { processRequestError } from 'src/base/node/errorHandling';
 import { UsersRepositoryInterface } from 'src/base/node/repositories/usersRepository';
@@ -16,6 +17,6 @@ export async function resetUserPassword(
 			success: true,
 		};
 	} catch (error) {
-		processRequestError(error, 'Invalid account reset');
+		processRequestError(error, new AuthenticationError('Invalid account reset'));
 	}
 }

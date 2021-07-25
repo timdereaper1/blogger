@@ -4,7 +4,7 @@ export function createAuthenticationToken(args: string) {
 	return sign(args, 'secret-key-used-for-tokens');
 }
 
-export function getAuthenticatedUserIdInToken(token: string): Promise<string | null> {
+export function getAuthenticatedUserIdInToken(token: string): string | null {
 	const isTokenValid = verifyAuthenticationToken(token);
 	if (!isTokenValid) return null;
 	const decoded = decode(token);

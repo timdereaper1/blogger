@@ -2,7 +2,7 @@ import faker from 'faker';
 import { BadRequestError } from 'src/base/common/errors';
 import { DBUser } from 'src/base/node/repositories/types';
 import { sendEmail } from 'src/base/node/services/mailing';
-import { createAuthenticationToken } from 'src/base/node/tokens';
+import { createExpiryAuthenticationToken } from 'src/base/node/tokens';
 import { UserPasswordResetCredentials } from 'src/modules/authentication/common/types';
 import { verifyAndSendPasswordResetEmail } from 'src/modules/authentication/node/handlers/verifyAndSendPasswordResetEmail';
 import { getPasswordResetEmail } from 'src/modules/authentication/node/templates/passwordResetEmail';
@@ -17,8 +17,8 @@ const mockedPasswordResetEmail = getPasswordResetEmail as jest.MockedFunction<
 	typeof getPasswordResetEmail
 >;
 const mockedSendEmail = sendEmail as jest.MockedFunction<typeof sendEmail>;
-const mockedCreateToken = createAuthenticationToken as jest.MockedFunction<
-	typeof createAuthenticationToken
+const mockedCreateToken = createExpiryAuthenticationToken as jest.MockedFunction<
+	typeof createExpiryAuthenticationToken
 >;
 
 describe('verifyAndSendPasswordResetEmail', () => {
